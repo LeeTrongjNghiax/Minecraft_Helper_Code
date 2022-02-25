@@ -1,3 +1,13 @@
+<style>
+
+  body {
+    background-color: black;
+    color: white;
+    font-family: monospace;
+  }
+
+</style>
+
 <body>
   <p id="output"></p>
   <input type="file" id="fileinput" accept="image/*" multiple>
@@ -289,7 +299,7 @@
       //zip.file(`${lootTableName[i]}.json`, encodeText() );
       
       //JSZip download canvas image
-      zip.file(`glass_${colors[i].id}.png`, urlToPromise(cv[i].toDataURL()), {binary: true});
+      zip.file(`stone_granite_${colors[i].id}.png`, urlToPromise(cv[i].toDataURL()), {binary: true});
     }
 
     zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
