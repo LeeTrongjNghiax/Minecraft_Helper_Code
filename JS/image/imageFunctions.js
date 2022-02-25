@@ -5,6 +5,23 @@ addColors = (...color) => {
     b: 0,
     a: 1
   };
+
+  for (let i of color) {
+    colorSum.r += i.r;
+    colorSum.g += i.g;
+    colorSum.b += i.b;
+  }
+
+  return colorSum;
+}
+
+averageColors = (...color) => {
+  let colorSum = {
+    r: 0,
+    g: 0,
+    b: 0,
+    a: 1
+  };
   let count = 0;
 
   for (let i of color) {
@@ -147,15 +164,19 @@ drawImageFromArray = (ctx, imagePixel2, color, side) => {
         //   ${imagePixel2[i][j].b + color.b + getRandInt(-maxD, maxD)}, 
         //   ${imagePixel2[i][j].a})`;
 
-        // ctx.fillStyle = `rgba(${addColors(imagePixel2[i][j], color).r}, 
-        //   ${addColors(imagePixel2[i][j], color).g}, 
-        //   ${addColors(imagePixel2[i][j], color).b},
-        //   ${imagePixel2[i][j].a})`;
+        ctx.fillStyle = `rgba(
+          ${averageColors(imagePixel2[i][j], color).r}, 
+          ${averageColors(imagePixel2[i][j], color).g}, 
+          ${averageColors(imagePixel2[i][j], color).b}, 
+          ${imagePixel2[i][j].a}
+        )`;
 
-          ctx.fillStyle = `rgba(${imagePixel2[i][j].r}, 
-            ${imagePixel2[i][j].g}, 
-            ${imagePixel2[i][j].b},
-            ${imagePixel2[i][j].a})`;
+        // ctx.fillStyle = `rgba(
+        //   ${imagePixel2[i][j].r}, 
+        //   ${imagePixel2[i][j].g}, 
+        //   ${imagePixel2[i][j].b},
+        //   ${imagePixel2[i][j].a}
+        // )`;
 
         ctx.fillRect(side * i, side * j, side, side);
       }

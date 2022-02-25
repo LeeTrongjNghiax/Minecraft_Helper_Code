@@ -60,6 +60,11 @@ encodeText = (text) => {
   return text2;
 }
 
+encodeText2 = (text) => {
+  let text2 = text.match(/"[^"]+"/g);
+  return text2;
+}
+
 deleteSpace = (text) => text.replace(/\s/g, ``);
 
 obfuscator = (text) => encodeText(deleteSpace(text));

@@ -2,27 +2,16 @@ let colors = [];
 let cv = [];
 let ctx = [];
 let namespace = `cb`;
+let side = 1;
 
-addShade = (color) => {
-  return {
-    r: color[0] - 224,
-    g: color[1] - 174,
-    b: color[2] - 93
+class Color{
+  constructor(r, g, b, a) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    this.a = a;
   }
 }
-
-drawShade = (ctx, side) => {
-  // for (let i = 0; i < side; i++) {
-  //   for (let j = 0; j < side; j++) {
-  //     let pixelData = ctx.getImageData(i, j, 1, 1).data; 
-  //     ctx.fillStyle = `rgb(${pixelData[0] + 31}, ${pixelData[1] + 81}, ${pixelData[2] + 162})`;
-  //     ctx.fillRect(i, j, 1, 1);
-  //   }
-  // }
-  let pixelData = ctx.getImageData(4, 4, 4, 4).data; 
-  console.log(pixelData)
-}
-
 class colorBlock{
   constructor(hex, id, name, color) {
     this.hex = hex;
@@ -183,30 +172,10 @@ colors.push(
   new colorBlock("#FFFFFF", "White", "White")
 )
 
-encodeText2 = (text) => {
-  let text2 = text.match(/"[^"]+"/g);
-
-  return text2;
-}
-
-function urlToPromise(url) {
-  return new Promise(function(resolve, reject) {
-    JSZipUtils.getBinaryContent(url, function (err, data) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data);
-      }
-    });
-  });
-}
-
 for (let i = 0; i < colors.length; i++) {
   colors[i].id = colors[i].id.toLowerCase();
   colors[i].color = hexToRgb(colors[i].hex);
 }
-
-let side = 1
 
 for (let i = 0; i < 1; i++) {
   let p = document.createElement("p");
@@ -333,6 +302,6 @@ generateText = () => {
 }
 
 //console.table(colors);     
-console.log(shaderBlock(`cb`, `line_right`, `a`, `line_right`, 1))
+//console.log(shaderBlock(`cb`, `line_right`, `a`, `line_right`, 1))
 
 let seeds = [`1918206077`, `-1277040098`, `162999298`];

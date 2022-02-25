@@ -1,8 +1,11 @@
 <body>
-  <input type="file" id="fileinput" accept = "image/*" multiple>
+  <p id="output"></p>
+  <input type="file" id="fileinput" accept="image/*" multiple>
   <canvas id="loadImage"></canvas>
   <br>
   <button id="drawImages">1. MAKE MULTIPLE IMAGE</button>
+  <br>
+  <button id="downloadImages">2. DOWNLOAD IMAGES</button>
   <br>
   <canvas id="drawOneImage"></canvas>
 </body>
@@ -48,28 +51,34 @@
       this.a = a;
     }
   }
-  class ColorName{
-    constructor(id, name, rgba) {
+
+  class colorBlock{
+    constructor(hex, id, name, color) {
+      this.hex = hex;
       this.id = id;
-      this.rgba = rgba;
+      this.name = name;
+      this.color = color;
     }
   }
 
+  let colors = [];
+  let cv = [];
+  let ctx = [];
+  let namespace = `cb`;
   let side = 16;
+  let multiple = 2;
 
-  let cvs = [];
   let imagePixel = [];
  
-
-  let cv = document.getElementById('loadImage');
-  cv.width = side;
-  cv.height = side;
-  let ctx = cv.getContext('2d');
-
-  let cv2 = document.getElementById('drawOneImage');
+  let cv2 = document.getElementById('loadImage');
   cv2.width = side;
   cv2.height = side;
   let ctx2 = cv2.getContext('2d');
+
+  let cv3 = document.getElementById('drawOneImage');
+  cv3.width = side;
+  cv3.height = side;
+  let ctx3 = cv3.getContext('2d');
 
   let null2DArray = [];
   for (let i = 0; i < side; i++) {
@@ -81,51 +90,211 @@
     }
   }
 
-  let colors = [];
   colors.push(
-    new ColorName(
-      "AliceBlue",
-      "AliceBlue",
-      new Color(
-        240,248,255,
-        255
-      )
-    ),
-    new ColorName(
-      "AntiqueWhite",
-      "AntiqueWhite",
-      new Color(
-        250,235,215
-        ,255
-      )
-    ),
-    new ColorName(
-      "ididididididididididididid",
-      "namenamenamenamenamenamename",
-      new Color(
-        1234567890
-        ,255
-      )
-    ),
- 
+    new colorBlock("#000000", "Black", "Black"),
+    new colorBlock("#000080", "Navy", "Navy"),
+    new colorBlock("#00008B", "DarkBlue", "Dark Blue"),
+    new colorBlock("#0000CD", "MediumBlue", "Medium Blue"),
+    new colorBlock("#0000FF", "Blue", "Blue"),
+    new colorBlock("#006400", "DarkGreen", "Dark Green"),
+    new colorBlock("#008000", "Green", "Green"),
+    new colorBlock("#008080", "Teal", "Teal"),
+    new colorBlock("#008B8B", "DarkCyan", "Dark Cyan"),
+    new colorBlock("#00BFFF", "DeepSkyBlue", "Deep Sky Blue"),
+    new colorBlock("#00CED1", "DarkTurquoise", "Dark Turquoise"),
+    new colorBlock("#00FA9A", "MediumSpringGreen", "Medium Spring Green"),
+    new colorBlock("#00FF00", "Lime", "Lime"),
+    new colorBlock("#00FF7F", "SpringGreen", "Spring Green"),
+    new colorBlock("#00FFFF", "Aqua", "Aqua"),
+    new colorBlock("#00FFFF", "Cyan", "Cyan"),
+    new colorBlock("#191970", "MidnightBlue", "Midnight Blue"),
+    new colorBlock("#1E90FF", "DodgerBlue", "Dodger Blue"),
+    new colorBlock("#20B2AA", "LightSeaGreen", "Light Sea Green"),
+    new colorBlock("#228B22", "ForestGreen", "Forest Green"),
+    new colorBlock("#2E8B57", "SeaGreen", "Sea Green"),
+    new colorBlock("#2F4F4F", "DarkSlateGray", "Dark Slate Gray"),
+    new colorBlock("#2F4F4F", "DarkSlateGrey", "Dark Slate Grey"),
+    new colorBlock("#32CD32", "LimeGreen", "Lime Green"),
+    new colorBlock("#3CB371", "MediumSeaGreen", "Medium Sea Green"),
+    new colorBlock("#40E0D0", "Turquoise", "Turquoise"),
+    new colorBlock("#4169E1", "RoyalBlue", "Royal Blue"),
+    new colorBlock("#4682B4", "SteelBlue", "Steel Blue"),
+    new colorBlock("#483D8B", "DarkSlateBlue", "Dark Slate Blue"),
+    new colorBlock("#48D1CC", "MediumTurquoise", "Medium Turquoise"),
+    new colorBlock("#4B0082", "Indigo", "Indigo"),
+    new colorBlock("#556B2F", "DarkOliveGreen", "Dark Olive Green"),
+    new colorBlock("#5F9EA0", "CadetBlue", "Cadet Blue"),
+    new colorBlock("#6495ED", "CornflowerBlue", "Cornflower Blue"),
+    new colorBlock("#663399", "RebeccaPurple", "Rebecca Purple"),
+    new colorBlock("#66CDAA", "MediumAquaMarine", "Medium Aqua Marine"),
+    new colorBlock("#696969", "DimGray", "Dim Gray"),
+    new colorBlock("#696969", "DimGrey", "Dim Grey"),
+    new colorBlock("#6A5ACD", "SlateBlue", "Slate Blue"),
+    new colorBlock("#6B8E23", "OliveDrab", "Olive Drab"),
+    new colorBlock("#708090", "SlateGray", "Slate Gray"),
+    new colorBlock("#708090", "SlateGrey", "Slate Grey"),
+    new colorBlock("#778899", "LightSlateGray", "Light Slate Gray"),
+    new colorBlock("#778899", "LightSlateGrey", "Light Slate Grey"),
+    new colorBlock("#7B68EE", "MediumSlateBlue", "Medium Slate Blue"),
+    new colorBlock("#7CFC00", "LawnGreen", "Lawn Green"),
+    new colorBlock("#7FFF00", "Chartreuse", "Chartreuse"),
+    new colorBlock("#7FFFD4", "Aquamarine", "Aquamarine"),
+    new colorBlock("#800000", "Maroon", "Maroon"),
+    new colorBlock("#800080", "Purple", "Purple"),
+    new colorBlock("#808000", "Olive", "Olive"),
+    new colorBlock("#808080", "Gray", "Gray"),
+    new colorBlock("#808080", "Grey", "Grey"),
+    new colorBlock("#87CEEB", "SkyBlue", "Sky Blue"),
+    new colorBlock("#87CEFA", "LightSkyBlue", "Light Sky Blue"),
+    new colorBlock("#8A2BE2", "BlueViolet", "Blue Violet"),
+    new colorBlock("#8B0000", "DarkRed", "Dark Red"),
+    new colorBlock("#8B008B", "DarkMagenta", "Dark Magenta"),
+    new colorBlock("#8B4513", "SaddleBrown", "Saddle Brown"),
+    new colorBlock("#8FBC8F", "DarkSeaGreen", "Dark Sea Green"),
+    new colorBlock("#90EE90", "LightGreen", "Light Green"),
+    new colorBlock("#9370DB", "MediumPurple", "Medium Purple"),
+    new colorBlock("#9400D3", "DarkViolet", "Dark Violet"),
+    new colorBlock("#98FB98", "PaleGreen", "Pale Green"),
+    new colorBlock("#9932CC", "DarkOrchid", "Dark Orchid"),
+    new colorBlock("#9ACD32", "YellowGreen", "Yellow Green"),
+    new colorBlock("#A0522D", "Sienna", "Sienna"),
+    new colorBlock("#A52A2A", "Brown", "Brown"),
+    new colorBlock("#A9A9A9", "DarkGray", "Dark Gray"),
+    new colorBlock("#A9A9A9", "DarkGrey", "Dark Grey"),
+    new colorBlock("#ADD8E6", "LightBlue", "Light Blue"),
+    new colorBlock("#ADFF2F", "GreenYellow", "Green Yellow"),
+    new colorBlock("#AFEEEE", "PaleTurquoise", "Pale Turquoise"),
+    new colorBlock("#B0C4DE", "LightSteelBlue", "Light Steel Blue"),
+    new colorBlock("#B0E0E6", "PowderBlue", "Powder Blue"),
+    new colorBlock("#B22222", "FireBrick", "Fire Brick"),
+    new colorBlock("#B8860B", "DarkGoldenRod", "Dark Golden Rod"),
+    new colorBlock("#BA55D3", "MediumOrchid", "Medium Orchid"),
+    new colorBlock("#BC8F8F", "RosyBrown", "Rosy Brown"),
+    new colorBlock("#BDB76B", "DarkKhaki", "Dark Khaki"),
+    new colorBlock("#C0C0C0", "Silver", "Silver"),
+    new colorBlock("#C71585", "MediumVioletRed", "Medium Violet Red"),
+    new colorBlock("#CD5C5C", "IndianRed", "Indian Red"),
+    new colorBlock("#CD853F", "Peru", "Peru"),
+    new colorBlock("#D2691E", "Chocolate", "Chocolate"),
+    new colorBlock("#D2B48C", "Tan", "Tan"),
+    new colorBlock("#D3D3D3", "LightGray", "Light Gray"),
+    new colorBlock("#D3D3D3", "LightGrey", "Light Grey"),
+    new colorBlock("#D8BFD8", "Thistle", "Thistle"),
+    new colorBlock("#DA70D6", "Orchid", "Orchid"),
+    new colorBlock("#DAA520", "GoldenRod", "Golden Rod"),
+    new colorBlock("#DB7093", "PaleVioletRed", "Pale Violet Red"),
+    new colorBlock("#DC143C", "Crimson", "Crimson"),
+    new colorBlock("#DCDCDC", "Gainsboro", "Gainsboro"),
+    new colorBlock("#DDA0DD", "Plum", "Plum"),
+    new colorBlock("#DEB887", "BurlyWood", "Burly Wood"),
+    new colorBlock("#E0FFFF", "LightCyan", "Light Cyan"),
+    new colorBlock("#E6E6FA", "Lavender", "Lavender"),
+    new colorBlock("#E9967A", "DarkSalmon", "Dark Salmon"),
+    new colorBlock("#EE82EE", "Violet", "Violet"),
+    new colorBlock("#EEE8AA", "PaleGoldenRod", "Pale Golden Rod"),
+    new colorBlock("#F08080", "LightCoral", "Light Coral"),
+    new colorBlock("#F0E68C", "Khaki", "Khaki"),
+    new colorBlock("#F0F8FF", "AliceBlue", "Alice Blue"),
+    new colorBlock("#F0FFF0", "HoneyDew", "Honey Dew"),
+    new colorBlock("#F0FFFF", "Azure", "Azure"),
+    new colorBlock("#F4A460", "SandyBrown", "Sandy Brown"),
+    new colorBlock("#F5DEB3", "Wheat", "Wheat"),
+    new colorBlock("#F5F5DC", "Beige", "Beige"),
+    new colorBlock("#F5F5F5", "WhiteSmoke", "White Smoke"),
+    new colorBlock("#F5FFFA", "MintCream", "Mint Cream"),
+    new colorBlock("#F8F8FF", "GhostWhite", "Ghost White"),
+    new colorBlock("#FA8072", "Salmon", "Salmon"),
+    new colorBlock("#FAEBD7", "AntiqueWhite", "Antique White"),
+    new colorBlock("#FAF0E6", "Linen", "Linen"),
+    new colorBlock("#FAFAD2", "LightGoldenRodYellow", "Light Golden Rod Yellow"),
+    new colorBlock("#FDF5E6", "OldLace", "Old Lace"),
+    new colorBlock("#FF0000", "Red", "Red"),
+    new colorBlock("#FF00FF", "Fuchsia", "Fuchsia"),
+    new colorBlock("#FF00FF", "Magenta", "Magenta"),
+    new colorBlock("#FF1493", "DeepPink", "Deep Pink"),
+    new colorBlock("#FF4500", "OrangeRed", "Orange Red"),
+    new colorBlock("#FF6347", "Tomato", "Tomato"),
+    new colorBlock("#FF69B4", "HotPink", "Hot Pink"),
+    new colorBlock("#FF7F50", "Coral", "Coral"),
+    new colorBlock("#FF8C00", "DarkOrange", "Dark Orange"),
+    new colorBlock("#FFA07A", "LightSalmon", "Light Salmon"),
+    new colorBlock("#FFA500", "Orange", "Orange"),
+    new colorBlock("#FFB6C1", "LightPink", "Light Pink"),
+    new colorBlock("#FFC0CB", "Pink", "Pink"),
+    new colorBlock("#FFD700", "Gold", "Gold"),
+    new colorBlock("#FFDAB9", "PeachPuff", "Peach Puff"),
+    new colorBlock("#FFDEAD", "NavajoWhite", "Navajo White"),
+    new colorBlock("#FFE4B5", "Moccasin", "Moccasin"),
+    new colorBlock("#FFE4C4", "Bisque", "Bisque"),
+    new colorBlock("#FFE4E1", "MistyRose", "Misty Rose"),
+    new colorBlock("#FFEBCD", "BlanchedAlmond", "Blanched Almond"),
+    new colorBlock("#FFEFD5", "PapayaWhip", "Papaya Whip"),
+    new colorBlock("#FFF0F5", "LavenderBlush", "Lavender Blush"),
+    new colorBlock("#FFF5EE", "SeaShell", "Sea Shell"),
+    new colorBlock("#FFF8DC", "Cornsilk", "Cornsilk"),
+    new colorBlock("#FFFACD", "LemonChiffon", "Lemon Chiffon"),
+    new colorBlock("#FFFAF0", "FloralWhite", "Floral White"),
+    new colorBlock("#FFFAFA", "Snow", "Snow"),
+    new colorBlock("#FFFF00", "Yellow", "Yellow"),
+    new colorBlock("#FFFFE0", "LightYellow", "Light Yellow"),
+    new colorBlock("#FFFFF0", "Ivory", "Ivory"),
+    new colorBlock("#FFFFFF", "White", "White")
   )
+
+  for (let i = 0; i < colors.length; i++) {
+    colors[i].id = colors[i].id.toLowerCase();
+    colors[i].color = hexToRgb(colors[i].hex);
+  }
+
+  //Event Listeners
 
   document.querySelector('#fileinput').addEventListener('change', (ev) => {
     console.log(ev.target.files[0].name);
     console.log(/.jpg$/.test(ev.target.files[0].name));
-    readImageToArray(ev, imagePixel, ctx)
+    readImageToArray(ev, imagePixel, ctx2)
     console.log(imagePixel);
   });
+
   document.querySelector('#drawImages').addEventListener('click', () => {
-    // drawImages(
-    //   imagePixel, 
-    //   side, 
-    //   multiple, 
-    //   (effects.length * 3) - 1, 
-    //   cv, 
-    //   effects
-    // )
-    drawImageFromArray(ctx2, imagePixel, new Color(125, 125, 125, 255), side);
+    for (let i = 0; i < colors.length; i++) {
+      let p = document.createElement("p");
+      p.innerHTML = `${i}. ${colors[i].name} (${colors[i].hex})`;
+      p.style.margin = 0;
+      p.style.padding = 0;
+      document.body.appendChild(p);
+
+      cv[i] = document.createElement("canvas");
+      cv[i].width = side * multiple;
+      cv[i].height = side * multiple;
+
+      ctx[i] = cv[i].getContext("2d");
+      document.body.appendChild(cv[i]);
+      drawImageFromArray(ctx[i], imagePixel, colors[i].color, multiple);
+      
+      cv[i].addEventListener("mousemove", () => {        
+        var pixelData = cv[i].getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data; 
+        document.querySelector("#output").innerHTML = ('R: ' + pixelData[0] + '<br>G: ' + pixelData[1] + '<br>B: ' + pixelData[2] + '<br>A: ' + pixelData[3]);
+      })
+    }
   });
+
+  document.querySelector("#downloadImages").addEventListener('click', () => zipImages() );
+
+  zipImages = () => {
+    var zip = new JSZip();
+    let prefixs = [`bookshelf`, `concrete`, `glass`, `plank`, `slab`, `stair`];
+    
+    for (let i = 0; i < colors.length; i++) {
+      //JSZip download text
+      //zip.file(`${lootTableName[i]}.json`, encodeText() );
+      
+      //JSZip download canvas image
+      zip.file(`glass_${colors[i].id}.png`, urlToPromise(cv[i].toDataURL()), {binary: true});
+    }
+
+    zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
+      saveAs(blob, `images.zip`);
+    });
+  }
 
 </script>
