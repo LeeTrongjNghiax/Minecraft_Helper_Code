@@ -1,0 +1,750 @@
+<style>
+
+  body {
+    background-color: rgb(50, 50, 50);
+  }
+
+  #drawImages {
+    visibility: inherit;
+  }
+
+</style>
+
+<body>
+  <input type="file" id="fileinput" accept = "image/*" multiple> 
+  <canvas id="loadImage"></canvas>
+  <br>
+  <button id="drawImages">1. MAKE MULTIPLE IMAGE</button>
+  <br>
+  <button id="downloadImages">2. DOWNLOAD IMAGES</button>
+  <br>
+  <button id="downloadTexts">3. DOWNLOAD TEXTS</button>
+  <br>
+  <button id="downloadText">4. DOWNLOAD TEXT</button>
+  <br>
+  <button id="downloadItemTexture">5. DOWNLOAD ITEM TEXTURE</button>
+  <br>
+  <canvas id="drawOneImage"></canvas>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.js" integrity="sha512-NOmoi96WK3LK/lQDDRJmrobxa+NMwVzHHAaLfxdy0DRHIBc6GZ44CRlYDmAKzg9j7tvq3z+FGRlJ4g+3QC2qXg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.js" integrity="sha512-B+gr+zLWg81qxVwvtYwKrmjvQtZKD/GGFF7jD80OfzbqFw+NsbS5faEqpCO7Q7oRw1bYi0+WLJf54j8Vm7NADw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.js" integrity="sha512-vzp9X4pwJHRiGSEH692sqmRe5R8OQNKSCe1zg38GQoNUGJtnPrwhwKF3lbaFZMsT8ZQ3ppZ8tlLqkJGosi5/CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="../JS/downloadSomethings/downloadText.js"></script>
+
+<script src="../JS/image/imageFunctions.js"></script>
+
+<script src="../JS/minecraft/returnRandomEvent.js"></script>
+
+<script src="../JS/minecraft/createItemJson.js"></script>
+
+<script src="../JS/minecraft/createItemTexture.js"></script>
+
+<script src="../JS/minecraft/createItemTextureList.js"></script>
+
+<script src="../JS/minecraft/createGiveFunction.js"></script>
+
+<script src="../JS/minecraft/createItemRecipe.js"></script>
+
+<script src="../JS/minecraft/createLootTable.js"></script>
+
+<script src="../JS/minecraft/createLootTableList.js"></script>
+
+<script src="../JS/miscellanous/urlToPromise.js"></script>
+
+<script src="../JS/number/numberFunctions.js"></script>
+
+<script src="../JS/text/textFunctions.js"></script>
+
+<script>
+
+//INIT
+
+class Color{
+  constructor(r, g, b, a) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    this.a = a;
+  }
+}
+
+class Bound{
+  constructor(min, max) {
+    this.min = min;
+    this.max = max
+  }
+}
+
+let side = 16;
+let side1 = 0;
+let multiple = 10;
+let numberOfSwords = 100;
+
+let cvs = [];
+let imagePixel = [];
+for (let i = 0; i < side; i++) {
+  imagePixel[i] = [];
+}
+
+let cv = document.getElementById('loadImage');
+cv.width = side;
+cv.height = side;
+let ctx = cv.getContext('2d');
+
+let cv2 = document.getElementById('drawOneImage');
+cv2.width = side;
+cv2.height = side;
+let ctx2 = cv2.getContext('2d');
+
+let damage = new Bound(8, 20);
+let damaged = new Bound(1, 1000);
+let diggingSpeed = new Bound(1, 16);
+let durability = new Bound(1, 1000);
+let enchantable = new Bound(1, 1000);
+
+let null2DArray = [];
+for (let i = 0; i < side; i++) {
+  null2DArray[i] = [];
+}
+for (let i = 0; i < side; i++) {
+  for (let j = 0; j < side; j++) {
+    null2DArray[i][j] = 0;
+  }
+}
+
+let redstoneColor = new Color(255, 0, 0, 1);
+let glowstoneColor = new Color(249, 212, 156, 1);
+
+let durabilitys = [33, 60, 132, 251, 1562, 2032];
+let swords = [
+  {
+    type: "wooden",
+    name: "Wooden",
+    damage: 5,
+    durability: 33
+  },
+  {
+    type: "golden",
+    name: "Golden",
+    damage: 5,
+    durability: 60
+  },
+  {
+    type: "stone",
+    name: "Stone",
+    damage: 6,
+    durability: 132
+  },
+  {
+    type: "iron",
+    name: "Iron",
+    damage: 7,
+    durability: 151
+  },
+  {
+    type: "diamond",
+    name: "Diamond",
+    damage: 8,
+    durability: 1562
+  },
+  {
+    type: "netherite",
+    name: "Netherite",
+    damage: 9,
+    durability: 2032
+  },
+]
+let effects = [
+  {
+    effect: "speed",
+    name: "Speed",
+    isPositive: true,
+    data: {
+      regular: 14,
+      long: 15,
+      strong: 16
+    },
+    color: {
+      regular: new Color(151, 202, 210, 1),
+      long: addColors(new Color(151, 202, 210, 1), redstoneColor),
+      strong: addColors(new Color(151, 202, 210, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "slowness",
+    name: "Slowness",
+    isPositive: false,
+    data: {
+      regular: 17,
+      long: 18,
+      strong: 42
+    },
+    color: {
+      regular: new Color(110, 133, 158, 1),
+      long: addColors(new Color(110, 133, 158, 1), redstoneColor),
+      strong: addColors(new Color(110, 133, 158, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "haste",
+    name: "Haste",
+    isPositive: true,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(217, 208, 82, 1),
+      long: addColors(new Color(217, 208, 82, 1), redstoneColor),
+      strong: addColors(new Color(217, 208, 82, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "mining_fatigue",
+    name: "Mining Fatigue",
+    isPositive: false,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(91, 80, 28, 1),
+      long: addColors(new Color(91, 80, 28, 1), redstoneColor),
+      strong: addColors(new Color(91, 80, 28, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "strength",
+    name: "Strength",
+    isPositive: true,
+    data: {
+      regular: 31,
+      long: 32,
+      strong: 33
+    },
+    color: {
+      regular: new Color(179, 45, 43, 1),
+      long: addColors(new Color(179, 45, 43, 1), redstoneColor),
+      strong: addColors(new Color(179, 45, 43, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "instant_health",
+    name: "Instant Health",
+    isPositive: true,
+    data: {
+      regular: 21,
+      long: null,
+      strong: 22
+    },
+    color: {
+      regular: new Color(228, 46, 43, 1),
+      long: addColors(new Color(228, 46, 43, 1), redstoneColor),
+      strong: addColors(new Color(228, 46, 43, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "instant_damage",
+    name: "Instant Damage",
+    isPositive: false,
+    data: {
+      regular: 23,
+      long: null,
+      strong: 24
+    },
+    color: {
+      regular: new Color(82, 12, 11, 1),
+      long: addColors(new Color(82, 12, 11, 1), redstoneColor),
+      strong: addColors(new Color(82, 12, 11, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "jump_boost",
+    name: "Jump Boost",
+    isPositive: true,
+    data: {
+      regular: 9,
+      long: 10,
+      strong: 11
+    },
+    color: {
+      regular: new Color(42, 231, 92, 1),
+      long: addColors(new Color(42, 231, 92, 1), redstoneColor),
+      strong: addColors(new Color(42, 231, 92, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "nausea",
+    name: "Nausea",
+    isPositive: false,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(104, 36, 92, 1),
+      long: addColors(new Color(104, 36, 92, 1), redstoneColor),
+      strong: addColors(new Color(104, 36, 92, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "regeneration",
+    name: "regeneration",
+    isPositive: true,
+    data: {
+      regular: 28,
+      long: 29,
+      strong: 30
+    },
+    color: {
+      regular: new Color(213, 113, 200, 1),
+      long: addColors(new Color(213, 113, 200, 1), redstoneColor),
+      strong: addColors(new Color(213, 113, 200, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "resistance",
+    name: "Resistance",
+    isPositive: true,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(187, 85, 71, 1),
+      long: addColors(new Color(187, 85, 71, 1), redstoneColor),
+      strong: addColors(new Color(187, 85, 71, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "fire_resistance",
+    name: "Fire Resistance",
+    isPositive: true,
+    data: {
+      regular: 12,
+      long: 13,
+      strong: null
+    },
+    color: {
+      regular: new Color(221, 189, 71, 1),
+      long: addColors(new Color(221, 189, 71, 1), redstoneColor),
+      strong: addColors(new Color(221, 189, 71, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "water_breathing",
+    name: "Water Breathing",
+    isPositive: true,
+    data: {
+      regular: 19,
+      long: 20,
+      strong: null
+    },
+    color: {
+      regular: new Color(56, 99, 187, 1),
+      long: addColors(new Color(56, 99, 187, 1), redstoneColor),
+      strong: addColors(new Color(56, 99, 187, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "invisibility",
+    name: "Invisibility",
+    isPositive: true,
+    data: {
+      regular: 7,
+      long: 8,
+      strong: null
+    },
+    color: {
+      regular: new Color(156, 161, 179, 1),
+      long: addColors(new Color(156, 161, 179, 1), redstoneColor),
+      strong: addColors(new Color(156, 161, 179, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "blindness",
+    name: "Blindness",
+    isPositive: false,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(39, 39, 43, 1),
+      long: addColors(new Color(39, 39, 43, 1), redstoneColor),
+      strong: addColors(new Color(39, 39, 43, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "night_vision",
+    name: "Night Vision",
+    isPositive: true,
+    data: {
+      regular: 5,
+      long: 6,
+      strong: null
+    },
+    color: {
+      regular: new Color(39, 39, 197, 1),
+      long: addColors(new Color(39, 39, 197, 1), redstoneColor),
+      strong: addColors(new Color(39, 39, 197, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "hunger",
+    name: "Hunger",
+    isPositive: false,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(108, 144, 102, 1),
+      long: addColors(new Color(108, 144, 102, 1), redstoneColor),
+      strong: addColors(new Color(108, 144, 102, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "weakness",
+    name: "Weakness",
+    isPositive: false,
+    data: {
+      regular: 34,
+      long: 35,
+      strong: null
+    },
+    color: {
+      regular: new Color(88, 94, 88, 1),
+      long: addColors(new Color(88, 94, 88, 1), redstoneColor),
+      strong: addColors(new Color(88, 94, 88, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "poison",
+    name: "Poison",
+    isPositive: false,
+    data: {
+      regular: 25,
+      long: 26,
+      strong: 27
+    },
+    color: {
+      regular: new Color(95, 179, 60, 1),
+      long: addColors(new Color(95, 179, 60, 1), redstoneColor),
+      strong: addColors(new Color(95, 179, 60, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "wither",
+    name: "Wither",
+    isPositive: false,
+    data: {
+      regular: 36,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(65, 51, 48, 1),
+      long: addColors(new Color(65, 51, 48, 1), redstoneColor),
+      strong: addColors(new Color(65, 51, 48, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "health_boost",
+    name: "Health Boost",
+    isPositive: true,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(228, 154, 43, 1),
+      long: addColors(new Color(228, 154, 43, 1), redstoneColor),
+      strong: addColors(new Color(228, 154, 43, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "absorption",
+    name: "Absorption",
+    isPositive: true,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(45, 99, 199, 1),
+      long: addColors(new Color(45, 99, 199, 1), redstoneColor),
+      strong: addColors(new Color(45, 99, 199, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "saturation",
+    name: "Saturation",
+    isPositive: true,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(228, 46, 43, 1),
+      long: addColors(new Color(228, 46, 43, 1), redstoneColor),
+      strong: addColors(new Color(228, 46, 43, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "levitation",
+    name: "Levitation",
+    isPositive: false,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(42, 231, 192, 1),
+      long: addColors(new Color(42, 231, 192, 1), redstoneColor),
+      strong: addColors(new Color(42, 231, 192, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "fatal_poison",
+    name: "Fatal Poison",
+    isPositive: false,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(0, 0, 0, 1),
+      long: addColors(new Color(0, 0, 0, 1), redstoneColor),
+      strong: addColors(new Color(0, 0, 0, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "slow_falling",
+    name: "Slow Falling",
+    isPositive: true,
+    data: {
+      regular: 40,
+      long: 41,
+      strong: null
+    },
+    color: {
+      regular: new Color(231, 225, 215, 1),
+      long: addColors(new Color(231, 225, 215, 1), redstoneColor),
+      strong: addColors(new Color(231, 225, 215, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "conduit_power",
+    name: "Conduit Power",
+    isPositive: true,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(0, 0, 0, 1),
+      long: addColors(new Color(0, 0, 0, 1), redstoneColor),
+      strong: addColors(new Color(0, 0, 0, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "bad_omen",
+    name: "Bad Omen",
+    isPositive: false,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(0, 0, 0, 1),
+      long: addColors(new Color(0, 0, 0, 1), redstoneColor),
+      strong: addColors(new Color(0, 0, 0, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "village_hero",
+    name: "Village Hero",
+    isPositive: true,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(0, 0, 0, 1),
+      long: addColors(new Color(0, 0, 0, 1), redstoneColor),
+      strong: addColors(new Color(0, 0, 0, 1), glowstoneColor),
+    }
+  },
+  {
+    effect: "darkness",
+    name: "Darkness",
+    isPositive: false,
+    data: {
+      regular: null,
+      long: null,
+      strong: null
+    },
+    color: {
+      regular: new Color(0, 0, 0, 1),
+      long: addColors(new Color(0, 0, 0, 1), redstoneColor),
+      strong: addColors(new Color(0, 0, 0, 1), glowstoneColor),
+    }
+  },
+];
+
+let isAddPixelSword = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+
+//FUNCTION
+
+zipImages = (numberOfImages) => {
+  let zip = new JSZip();
+  let j = 0;
+  let i = 0;
+  let num = 0;
+
+  while (cv[j] != null) {
+    zip.file(`${swords[num].type}/${effects[i].effect}_${swords[num].type}_sword.png`, urlToPromise(cv[j].toDataURL()), {binary: true});
+    j++;
+    zip.file(`${swords[num].type}/long_${effects[i].effect}_${swords[num].type}_sword.png`, urlToPromise(cv[j].toDataURL()), {binary: true});
+    j++;
+    zip.file(`${swords[num].type}/strong_${effects[i].effect}_${swords[num].type}_sword.png`, urlToPromise(cv[j].toDataURL()), {binary: true});
+    j++;
+    i++;
+  }
+
+  zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
+    saveAs(blob, `${swords[num].type}Swords.zip`);
+  });
+}
+
+zipTexts = (numberOfTexts) => {
+  let zip = new JSZip();
+  let longNormal = 16;
+  let strongNormal = 1;
+
+  for (let i = 0; i < swords.length; i++) {
+    //Create item
+
+    for (let j = 0; j < effects.length; j++) {
+      zip.file(`${swords[i].type}/${effects[j].effect}_${swords[i].type}_sword.json`, (creatSwordJson(swords[i], effects[j], longNormal, strongNormal, "", "")), {binary: true});
+      let prefix = "long_";
+      zip.file(`${swords[i].type}/${prefix}${effects[j].effect}_${swords[i].type}_sword.json`, (creatSwordJson(swords[i], effects[j], longNormal * 2, strongNormal, prefix, "Long ")), {binary: true});
+      prefix = "strong_";
+      zip.file(`${swords[i].type}/${prefix}${effects[j].effect}_${swords[i].type}_sword.json`, (creatSwordJson(swords[i], effects[j], longNormal, strongNormal * 2, prefix, "Strong ")), {binary: true});
+    }
+
+    //Create recipe
+
+    // for (let j = 0; j < effects.length; j++) {
+    //   if (effects[j].data.regular != null) {
+    //     let prefix = "";
+    //     zip.file(`${swords[i].type}/${effects[j].effect}_${swords[i].type}_sword.json`, (createSwordRecipe(swords[i], effects[j], prefix, effects[j].data.regular)), {binary: true})
+    //   }
+    //   if (effects[j].data.long != null) {
+    //     let prefix = "long_";
+    //     zip.file(`${swords[i].type}/${prefix}${effects[j].effect}_${swords[i].type}_sword.json`, (createSwordRecipe(swords[i], effects[j], prefix, effects[j].data.long)), {binary: true})
+    //   }
+    //   if (effects[j].data.strong != null) {
+    //     let prefix = "strong_";
+    //     zip.file(`${swords[i].type}/${prefix}${effects[j].effect}_${swords[i].type}_sword.json`, (createSwordRecipe(swords[i], effects[j], prefix, effects[j].data.strong)), {binary: true})
+    //   }
+    // }
+  }
+
+  zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
+    saveAs(blob, `swordTexts.zip`);
+  });
+}
+
+//ACTION
+
+let text = creatSwordJson(swords[3], effects[3]);
+
+let fi = document.querySelector('#fileinput');
+fi.addEventListener('change', (ev) => {
+  console.log(ev.target.files[0].name);
+  console.log(/.jpg$/.test(ev.target.files[0].name));
+  readImageToArray(ev, imagePixel, ctx)
+  console.log(imagePixel);
+});
+document.querySelector('#drawImages').addEventListener('click', () => {
+  drawImages(
+    imagePixel, 
+    side, 
+    multiple, 
+    (effects.length * 3) - 1, 
+    cv, 
+    effects
+  )
+  //drawImageFromArray(ctx2, imagePixel, effects[1].color, null2DArray);
+});
+document.querySelector("#downloadImages").addEventListener('click', () => zipImages(((effects.length * 3) - 1)));
+document.querySelector("#downloadTexts").addEventListener('click', () => zipTexts(numberOfSwords));
+document.querySelector("#downloadText").addEventListener('click', () => downloadText("testSword.json", (deleteSpace(text)) ));
+document.querySelector("#downloadItemTexture").addEventListener('click', 
+  () => {
+    //downloadText("item_texture.json", encodeText(deleteSpace(createItemTexture(createItemTextureList(effects, swords)))))
+    downloadText("lootTableLmao.json", ((createLootTable(1, 10, createLootTableList(10, 1, 1, effects, swords, "")))));
+  }
+);
+
+document.addEventListener('keydown', (ev) => keyboardEvent());
+
+keyboardEvent = (ev) => {
+  switch (ev) {
+    case 97:
+      drawImages(imagePixel, side, multiple, numberOfSwords, null2DArray, cv);
+      break;
+    case 98:
+      zipImages(numberOfSwords);
+      break;
+    case 99:
+      zipTexts(numberOfSwords);
+      break;
+    case 100:
+      downloadText("testSword.json", encodeText(creatSwordJson(100, damage, damaged, diggingSpeed, durability, enchantable, `sword_0`)));
+      break;
+  }
+}
+
+//TEST
+
+console.table(effects);
+
+</script>

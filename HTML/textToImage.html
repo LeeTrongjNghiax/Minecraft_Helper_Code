@@ -1,0 +1,39 @@
+<script src="https://cdn.jsdelivr.net/npm/text-image/dist/text-image.js"></script>
+
+<script>
+
+var message = "Change this text create your image.\n更改文字創建您的圖案。\nこのテキストを変更してイメージを作成します。\n이 텍스트를 변경하여 이미지를 만듭니다.\nÄndern Sie diesen Text, um Ihr Bild zu erstellen.\nChangez ce texte créez votre image.\nCambia este texto crea tu imagen.\nΑλλάξτε αυτό το κείμενο δημιουργήστε την εικόνα σας.\nŜanĝi ĉi tiun tekston krei vian bildon.\n🌍 🚀 🌛\n          ";var style = {
+    "font": "FontAwesome,'Helvetica Neue',Helvetica,Arial,sans-serif",
+    "align": "left",
+    "color": "rgba(0, 0, 0, 1)",
+    "size": 16,
+    "background": "rgba(0, 0, 0, 0)",
+    "stroke": 0,
+    "strokeColor": "rgba(255, 255, 255, 1)",
+    "lineHeight": "1.2em",
+    "bold": false,
+    "italic": false
+};
+
+var style = {
+    font: 'serif',
+    align: 'center',
+    color: 'red',
+    size: 18,
+    background: 'white',
+    stroke: 1,
+    strokeColor: 'rgba(0, 0, 0, 1)'
+};
+
+var textImage = TextImage(style);
+var img = textImage.toImage(message);
+
+// create new TextImage object with customize style
+
+// convert text message to base64 dataURL
+var data = textImage.toDataURL(message);
+
+// change style
+textImage.setStyle(style);
+  
+</script>

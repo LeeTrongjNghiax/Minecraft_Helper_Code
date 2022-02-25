@@ -1,0 +1,42 @@
+<script>
+
+  printComponent = (component) => {
+    let text = ``;
+
+    text += `{
+      ${component.name}: {
+        `
+
+    
+  }
+
+  class Pair{
+    constructor(name, values) {
+      this.name = name;
+      this.values = values
+    }
+  }
+
+  let can_place_on = new Pair(
+    "minecraft:can_place_on",
+    [
+      new Pair("blocks", ["dirt", "stone"])
+    ]
+  )
+
+  let item_lock = new Pair(
+    "minecraft:item_lock",
+    [
+      new Pair("mode", ["lock_in_inventory", "lock_in_slot"])
+    ]
+  )
+
+  let example = `{
+  "${can_place_on.name}": {
+    "${can_place_on.values[0].name}": ["${can_place_on.values[0].values[0]}"]
+  }
+}`
+
+  console.log(example);
+
+</script>

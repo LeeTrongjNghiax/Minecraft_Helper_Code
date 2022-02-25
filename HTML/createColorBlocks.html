@@ -1,0 +1,131 @@
+<body>
+  <input type="file" id="fileinput" accept = "image/*" multiple>
+  <canvas id="loadImage"></canvas>
+  <br>
+  <button id="drawImages">1. MAKE MULTIPLE IMAGE</button>
+  <br>
+  <canvas id="drawOneImage"></canvas>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.js" integrity="sha512-NOmoi96WK3LK/lQDDRJmrobxa+NMwVzHHAaLfxdy0DRHIBc6GZ44CRlYDmAKzg9j7tvq3z+FGRlJ4g+3QC2qXg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.js" integrity="sha512-B+gr+zLWg81qxVwvtYwKrmjvQtZKD/GGFF7jD80OfzbqFw+NsbS5faEqpCO7Q7oRw1bYi0+WLJf54j8Vm7NADw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.js" integrity="sha512-vzp9X4pwJHRiGSEH692sqmRe5R8OQNKSCe1zg38GQoNUGJtnPrwhwKF3lbaFZMsT8ZQ3ppZ8tlLqkJGosi5/CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="../JS/downloadSomethings/downloadText.js"></script>
+
+<script src="../JS/image/imageFunctions.js"></script>
+
+<script src="../JS/minecraft/returnRandomEvent.js"></script>
+
+<script src="../JS/minecraft/createItemJson.js"></script>
+
+<script src="../JS/minecraft/createItemTexture.js"></script>
+
+<script src="../JS/minecraft/createItemTextureList.js"></script>
+
+<script src="../JS/minecraft/createGiveFunction.js"></script>
+
+<script src="../JS/minecraft/createItemRecipe.js"></script>
+
+<script src="../JS/minecraft/createLootTable.js"></script>
+
+<script src="../JS/minecraft/createLootTableList.js"></script>
+
+<script src="../JS/miscellanous/urlToPromise.js"></script>
+
+<script src="../JS/number/numberFunctions.js"></script>
+
+<script src="../JS/text/textFunctions.js"></script>
+
+<script>
+  class Color{
+    constructor(r, g, b, a) {
+      this.r = r;
+      this.g = g;
+      this.b = b;
+      this.a = a;
+    }
+  }
+  class ColorName{
+    constructor(id, name, rgba) {
+      this.id = id;
+      this.rgba = rgba;
+    }
+  }
+
+  let side = 16;
+
+  let cvs = [];
+  let imagePixel = [];
+ 
+
+  let cv = document.getElementById('loadImage');
+  cv.width = side;
+  cv.height = side;
+  let ctx = cv.getContext('2d');
+
+  let cv2 = document.getElementById('drawOneImage');
+  cv2.width = side;
+  cv2.height = side;
+  let ctx2 = cv2.getContext('2d');
+
+  let null2DArray = [];
+  for (let i = 0; i < side; i++) {
+    null2DArray[i] = [];
+  }
+  for (let i = 0; i < side; i++) {
+    for (let j = 0; j < side; j++) {
+      null2DArray[i][j] = 0;
+    }
+  }
+
+  let colors = [];
+  colors.push(
+    new ColorName(
+      "AliceBlue",
+      "AliceBlue",
+      new Color(
+        240,248,255,
+        255
+      )
+    ),
+    new ColorName(
+      "AntiqueWhite",
+      "AntiqueWhite",
+      new Color(
+        250,235,215
+        ,255
+      )
+    ),
+    new ColorName(
+      "ididididididididididididid",
+      "namenamenamenamenamenamename",
+      new Color(
+        1234567890
+        ,255
+      )
+    ),
+ 
+  )
+
+  document.querySelector('#fileinput').addEventListener('change', (ev) => {
+    console.log(ev.target.files[0].name);
+    console.log(/.jpg$/.test(ev.target.files[0].name));
+    readImageToArray(ev, imagePixel, ctx)
+    console.log(imagePixel);
+  });
+  document.querySelector('#drawImages').addEventListener('click', () => {
+    // drawImages(
+    //   imagePixel, 
+    //   side, 
+    //   multiple, 
+    //   (effects.length * 3) - 1, 
+    //   cv, 
+    //   effects
+    // )
+    drawImageFromArray(ctx2, imagePixel, new Color(125, 125, 125, 255), side);
+  });
+
+</script>

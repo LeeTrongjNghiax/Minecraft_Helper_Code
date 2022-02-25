@@ -1,0 +1,30 @@
+<script>
+
+getRandInt = (min, max) => Math.round(Math.random() * (max - min) + min);
+
+let coordinateArgument = {
+  x: { min: -16, max: 16 },
+  y: { min: -16, max: 16 },
+  z: { min: -16, max: 16 }
+}
+
+let distanceArgument = {
+  r: { min: -16, max: 16 },
+  rm: { min: -16, max: 16 },
+}
+
+let volumeDimensionArgument = {
+  dx: { min: -16, max: 16 },
+  dy: { min: -16, max: 16 },
+  dz: { min: -16, max: 16 }
+}
+
+let scoreArgument = {
+  scores: { min: 0, max: 1000 },
+}
+
+let tagArgument = {
+  tag: ""
+}
+
+</script>

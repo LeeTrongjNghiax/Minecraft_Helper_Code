@@ -1,0 +1,1004 @@
+<script src="http://danml.com/js/download2.js"></script>
+<script>
+   let biomes = [];
+   
+   class Biome{
+     constructor(id, name, tags, no_tags) {
+       this.id = id;
+       this.name = name;
+       this.tags = tags;
+       this.no_tags = no_tags;
+     }
+   }
+   
+   biomes.push(
+     new Biome(
+       "bamboo_jungle", 
+       "Bamboo Jungle",
+   
+       ["animal",
+       "bamboo",
+       "jungle",
+       "monster",
+       "overworld"],
+
+       [
+         "hills"
+       ]
+     ),
+     new Biome(
+       "bamboo_jungle_hills", 
+       "Bamboo Jungle Hills",
+   
+       ["animal",
+       "bamboo",
+       "hills",
+       "jungle",
+       "monster",
+       "overworld"]
+     ),
+     new Biome(
+       "basalt_deltas", 
+       "Basalt Deltas",
+   
+       ["nether",
+       "basalt_deltas",
+       "spawn_many_magma_cubes",
+       "spawn_ghast",]
+     ),
+     new Biome(
+       "beach", 
+       "Beach",
+   
+       ["beach",
+       "monster",
+       "overworld",
+       "warm",]
+     ),
+     new Biome(
+       "birch_forest", 
+       "Birch Forest",
+   
+       ["animal",
+       "birch",
+       "forest",
+       "monster",
+       "overworld",
+       "bee_habitat",],
+
+       [
+         "hills"
+       ]
+     ),
+     new Biome(
+       "birch_forest_hills", 
+       "Birch Forest Hills",
+   
+       ["animal",
+       "birch",
+       "forest",
+       "hills",
+       "monster",
+       "overworld",
+       "bee_habitat",]
+     ),
+     new Biome(
+       "birch_forest_hills_mutated", 
+       "Birch Forest Hills Mutated",
+   
+       ["animal",
+       "birch",
+       "forest",
+       "hills",
+       "monster",
+       "mutated",
+       "overworld_generation",]
+     ),
+     new Biome(
+       "birch_forest_mutated", 
+       "Birch Forest Mutated",
+   
+       ["animal",
+       "birch",
+       "forest",
+       "monster",
+       "mutated",
+       "bee_habitat",
+       "overworld_generation",]
+     ),
+     new Biome(
+       "cold_beach", 
+       "Cold Beach",
+   
+       ["beach",
+       "cold",
+       "monster",
+       "overworld",]
+     ),
+     new Biome(
+       "cold_ocean", 
+       "Cold Ocean",
+   
+       ["cold",
+       "monster",
+       "ocean",
+       "overworld",]
+     ),
+     new Biome(
+       "cold_taiga", 
+       "Cold Taiga",
+   
+       ["animal",
+       "cold",
+       "forest",
+       "monster",
+       "overworld",
+       "taiga",],
+
+       [
+         "hills"
+       ]
+     ),
+     new Biome(
+       "cold_taiga_hills", 
+       "Cold Taiga Hills",
+   
+       ["animal",
+       "cold",
+       "forest",
+       "hills",
+       "monster",
+       "overworld",
+       "taiga",]
+     ),
+     new Biome(
+       "cold_taiga_mutated", 
+       "Cold Taiga Mutated",
+   
+       ["animal",
+       "cold",
+       "forest",
+       "monster",
+       "mutated",
+       "taiga",
+       "overworld_generation",]
+     ),
+     new Biome(
+       "crimson_forest", 
+       "Crimson Forest",
+   
+       ["nether",
+       "netherwart_forest",
+       "crimson_forest",
+       "spawn_few_zombified_piglins",
+       "spawn_piglin",]
+     ),
+     new Biome(
+       "deep_cold_ocean", 
+       "Deep Cold Ocean",
+   
+       ["cold",
+       "deep",
+       "monster",
+       "ocean",
+       "overworld",]
+     ),
+     new Biome(
+       "deep_frozen_ocean", 
+       "Deep Frozen Ocean",
+   
+       ["deep",
+       "frozen",
+       "monster",
+       "ocean",
+       "overworld",]
+     ),
+     new Biome(
+       "deep_lukewarm_ocean", 
+       "Deep Lukewarm Ocean",
+   
+       ["deep",
+       "lukewarm",
+       "monster",
+       "ocean",
+       "overworld",]
+     ),
+     new Biome(
+       "deep_ocean", 
+       "Deep Ocean",
+   
+       ["deep",
+       "monster",
+       "ocean",
+       "overworld",],
+
+       [
+         "warm"
+       ]
+     ),
+     new Biome(
+       "deep_warm_ocean", 
+       "Deep Warm Ocean",
+   
+       ["deep",
+       "monster",
+       "ocean",
+       "overworld",
+       "warm",]
+     ),
+     new Biome(
+       "desert", 
+       "Desert",
+   
+       ["desert",
+       "monster",
+       "overworld",],
+
+       [
+         "hills"
+       ]
+     ),
+     new Biome(
+       "desert_hills", 
+       "Desert Hills",
+   
+       ["desert",
+       "hills",
+       "monster",
+       "overworld",]
+     ),
+     new Biome(
+       "desert_mutated", 
+       "Desert Mutated",
+   
+       ["desert",
+       "monster",
+       "mutated",
+       "overworld_generation",]    
+     ),
+     new Biome(
+       "dripstone_caves", 
+       "Dripstone Caves",
+   
+       ["caves",
+       "overworld",
+       "dripstone_caves",
+       "monster",]  
+     ),
+     new Biome(
+       "extreme_hills", 
+       "Extreme Hills",
+   
+       ["animal",
+       "extreme_hills",
+       "monster",
+       "overworld",],
+
+       [
+         "edge",
+         "mountain",
+         "forest",
+         "mutated"
+       ]
+     ),
+     new Biome(
+       "extreme_hills_edge", 
+       "Extreme Hills Edge",
+   
+       ["animal",
+       "edge",
+       "extreme_hills",
+       "monster",
+       "mountain",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "extreme_hills_mutated", 
+       "Extreme Hills Mutated",
+   
+       ["animal",
+       "extreme_hills",
+       "monster",
+       "mutated",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "extreme_hills_plus_trees", 
+       "Extreme Hills Plus Trees",
+   
+       ["animal",
+       "extreme_hills",
+       "forest",
+       "monster",
+       "mountain",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "extreme_hills_plus_trees_mutated", 
+       "Extreme Hills Plus Trees Mutated",
+   
+       ["animal",
+       "extreme_hills",
+       "forest",
+       "monster",
+       "mutated",
+       "overworld",] 
+     ),
+   
+     new Biome(
+       "flower_forest", 
+       "Flower Forest",
+   
+       ["flower_forest",
+       "monster",
+       "mutated",
+       "overworld",
+       "bee_habitat",]
+     ),
+   
+     new Biome(
+       "forest", 
+       "Forest",
+   
+       ["animal",
+       "forest",
+       "monster",
+       "overworld",
+       "bee_habitat",]
+     ),
+   
+     new Biome(
+       "forest_hills", 
+       "Forest Hills",
+   
+       ["animal",
+       "hills",
+       "monster",
+       "overworld",
+       "forest",
+       "bee_habitat",]
+     ),
+   
+     new Biome(
+       "frozen_ocean", 
+       "Frozen Ocean",
+   
+       ["frozen",
+       "monster",
+       "ocean",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "frozen_peaks", 
+       "Frozen Peaks",
+   
+       ["mountains",
+       "monster",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "grove", 
+       "Grove",
+   
+       ["mountains",
+       "monster",
+       "overworld",
+       "grove",]
+     ),
+   
+     new Biome(
+       "frozen_river", 
+       "Frozen River",
+   
+       ["frozen",
+       "overworld",
+       "river",]
+     ),
+   
+     new Biome(
+       "hell", 
+       "Hell",
+   
+       ["nether",
+       "nether_wastes",
+       "spawn_magma_cubes",
+       "spawn_zombified_piglin",
+       "spawn_few_piglins",
+       "spawn_ghast",
+       "spawn_endermen",]
+     ),
+   
+     new Biome(
+       "ice_mountains", 
+       "Ice Mountains",
+   
+       ["frozen",
+       "ice",
+       "mountain",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "ice_plains", 
+       "Ice Plains",
+   
+       ["frozen",
+       "ice",
+       "ice_plains",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "ice_plains_spikes", 
+       "Ice Plains Spikes",
+   
+       ["frozen",
+       "ice_plains",
+       "monster",
+       "mutated",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "jagged_peaks", 
+       "Jagged Peaks",
+   
+       ["mountains",
+       "monster",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "jungle", 
+       "Jungle",
+   
+       ["animal",
+       "jungle",
+       "monster",
+       "overworld",
+       "rare",]
+     ),
+   
+     new Biome(
+       "jungle_edge", 
+       "Jungle Edge",
+   
+       ["animal",
+       "edge",
+       "jungle",
+       "monster",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "jungle_edge_mutated", 
+       "Jungle Edge Mutated",
+   
+       ["animal",
+       "edge",
+       "jungle",
+       "monster",
+       "mutated",
+       "overworld_generation",]
+     ),
+   
+     new Biome(
+       "jungle_hills", 
+       "Jungle Hills",
+   
+       ["animal",
+       "hills",
+       "jungle",
+       "monster",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "jungle_mutated", 
+       "Jungle Mutated",
+   
+       ["animal",
+       "jungle",
+       "monster",
+       "mutated",
+       "overworld_generation",],
+
+       [
+         "edge"
+       ]
+     ),
+   
+     new Biome(
+       "legacy_frozen_ocean", 
+       "Legacy Frozen Ocean",
+   
+       ["frozen",
+       "ocean",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "lukewarm_ocean", 
+       "Lukewarm Ocean",
+   
+       ["lukewarm",
+       "monster",
+       "ocean",
+       "overworld",]  
+     ),
+   
+     new Biome(
+       "lush_caves", 
+       "Lush Caves",
+   
+       ["caves",
+       "lush_caves",
+       "overworld",
+       "monster",]
+     ),
+   
+     new Biome(
+       "meadow", 
+       "Meadow",
+   
+       ["mountains",
+       "monster",
+       "overworld",
+       "meadow",
+       "bee_habitat",]
+     ),
+   
+     new Biome(
+       "mega_taiga", 
+       "Mega Taiga",
+   
+       ["animal",
+       "forest",
+       "mega",
+       "monster",
+       "overworld",
+       "rare",
+       "taiga",]
+     ),
+   
+     new Biome(
+       "mega_taiga_hills", 
+       "Mega Taiga Hills",
+   
+       ["animal",
+       "forest",
+       "hills",
+       "mega",
+       "monster",
+       "overworld",
+       "taiga",]
+     ),
+   
+     new Biome(
+       "mesa", 
+       "Mesa",
+   
+       ["mesa",
+       "monster",
+       "overworld",],
+
+       [
+         "animal",
+         "mutated",
+         "plateau",
+         "rare",
+         "stone"
+       ]
+     ),
+   
+     new Biome(
+       "mesa_bryce", 
+       "Mesa Bryce",
+   
+       ["animal",
+       "mesa",
+       "monster",
+       "mutated",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "mesa_plateau", 
+       "Mesa Plateau",
+   
+       ["mesa",
+       "monster",
+       "overworld",
+       "plateau",
+       "rare",],
+
+       [
+         "stone"
+       ]
+     ),
+   
+     new Biome(
+       "mesa_plateau_mutated", 
+       "Mesa Plateau Mutated",
+   
+       ["mesa",
+       "monster",
+       "mutated",
+       "overworld",
+       "plateau",
+       "stone",]
+     ),
+   
+     new Biome(
+       "mesa_plateau_stone", 
+       "Mesa Plateau Stone",
+   
+       ["mesa",
+       "monster",
+       "overworld",
+       "plateau",
+       "rare",
+       "stone",]
+     ),
+   
+     new Biome(
+       "mesa_plateau_stone_mutated", 
+       "Mesa Plateau Stone Mutated",
+   
+       ["mesa",
+       "monster",
+       "mutated",
+       "overworld",
+       "plateau",],
+
+       [
+         "stone"
+       ]
+     ),
+   
+     new Biome(
+       "mushroom_island", 
+       "Mushroom Island",
+   
+       ["mooshroom_island",
+       "overworld",],
+
+       [
+         "shore"
+       ]
+     ),
+   
+     new Biome(
+       "mushroom_island_shore", 
+       "Mushroom Island Shore",
+   
+       ["mooshroom_island",
+       "overworld",
+       "shore",]
+     ),
+   
+     new Biome(
+       "ocean", 
+       "Ocean",
+   
+       ["monster",
+       "ocean",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "plains", 
+       "Plains",
+   
+       ["animal",
+       "monster",
+       "overworld",
+       "plains",
+       "bee_habitat",],
+
+       [
+         "mutated"
+       ]
+     ),
+   
+     new Biome(
+       "redwood_taiga_hills_mutated", 
+       "Redwood Taiga Hills Mutated",
+   
+       ["animal",
+       "forest",
+       "hills",
+       "mega",
+       "monster",
+       "mutated",
+       "taiga",
+       "overworld_generation",]
+     ),
+   
+     new Biome(
+       "redwood_taiga_mutated", 
+       "Redwood Taiga Mutated",
+   
+       ["animal",
+       "forest",
+       "mega",
+       "monster",
+       "mutated",
+       "overworld",
+       "taiga",]
+     ),
+   
+     new Biome(
+       "river", 
+       "River",
+   
+       ["overworld",
+       "river",]
+     ),
+   
+     new Biome(
+       "roofed_forest", 
+       "Roofed Forest",
+   
+       ["animal",
+       "forest",
+       "monster",
+       "no_legacy_worldgen",
+       "overworld",
+       "roofed",]
+     ),
+   
+     new Biome(
+       "roofed_forest_mutated", 
+       "Roofed Forest Mutated",
+   
+       ["animal",
+       "forest",
+       "monster",
+       "mutated",
+       "roofed",
+       "overworld_generation",]
+     ),
+   
+     new Biome(
+       "savanna", 
+       "Savanna",
+   
+       ["animal",
+       "monster",
+       "overworld",
+       "savanna",],
+
+       [
+         "mutated",
+         "plateau"
+       ]
+     ),
+   
+     new Biome(
+       "savanna_mutated", 
+       "Savanna Mutated",
+   
+       ["animal",
+       "monster",
+       "mutated",
+       "overworld",
+       "savanna",],
+
+       [
+         "plateau"
+       ]
+     ),
+   
+     new Biome(
+       "savanna_plateau", 
+       "Savanna Plateau",
+   
+       ["animal",
+       "monster",
+       "overworld",
+       "plateau",
+       "savanna",],
+
+       [
+         "mutated"
+       ]
+     ),
+   
+     new Biome(
+       "savanna_plateau_mutated", 
+       "Savanna Plateau Mutated",
+   
+       ["animal",
+       "monster",
+       "mutated",
+       "overworld",
+       "plateau",
+       "savanna",]
+     ),
+   
+     new Biome(
+       "snowy_slopes", 
+       "Snowy Slopes",
+   
+       ["mountains",
+       "monster",
+       "overworld",
+       "snowy_slopes",]
+     ),
+   
+     new Biome(
+       "soulsand_valley", 
+       "Soulsand Valley",
+   
+       ["nether",
+       "soulsand_valley",
+       "spawn_ghast",
+       "spawn_endermen",]
+     ),
+   
+     new Biome(
+       "stone_beach", 
+       "Stone Beach",
+   
+       ["beach",
+       "monster",
+       "overworld",
+       "stone",]
+     ),
+   
+     new Biome(
+       "stony_peaks", 
+       "Stony Peaks",
+   
+       ["mountains",
+       "monster",
+       "overworld",]
+     ),
+   
+     new Biome(
+       "sunflower_plains", 
+       "Sunflower Plains",
+   
+       ["animal",
+       "monster",
+       "mutated",
+       "overworld",
+       "plains",
+       "bee_habitat",]
+     ),
+   
+     new Biome(
+       "swampland", 
+       "Swampland",
+   
+       ["animal",
+       "monster",
+       "overworld",
+       "swamp",]
+     ),
+   
+     new Biome(
+       "swampland_mutated", 
+       "Swampland Mutated",
+   
+       ["animal",
+       "monster",
+       "mutated",
+       "swamp",
+       "overworld_generation",] 
+     ),
+   
+     new Biome(
+       "taiga", 
+       "Taiga",
+   
+       ["animal",
+       "forest",
+       "monster",
+       "overworld",
+       "taiga",],
+
+       [
+         "hills"
+       ]
+     ),
+     
+     new Biome(
+       "taiga_hills", 
+       "Taiga Hills",
+   
+       ["animal",
+       "forest",
+       "hills",
+       "monster",
+       "overworld",
+       "taiga",]
+     ),
+   
+     new Biome(
+       "taiga_mutated", 
+       "Taiga Mutated",
+   
+       ["animal",
+       "forest",
+       "monster",
+       "mutated",
+       "taiga",
+       "overworld_generation",]
+     ),
+   
+     new Biome(
+       "the_end", 
+       "The End",
+   
+       ["the_end",]
+     ),
+   
+     new Biome(
+       "warm_ocean", 
+       "Warm Ocean",
+   
+       ["monster",
+       "ocean",
+       "overworld",
+       "warm",]
+     ),
+   
+     new Biome(
+       "warped_forest", 
+       "Warped Forest",
+   
+       ["nether",
+       "netherwart_forest",
+       "warped_forest",
+       "spawn_endermen",]
+     ),
+   )
+   
+	 console.log(biomes);
+
+   biomeHelperGeneration = (arr) => {
+     let begin = `{"format_version":"1.17.0","animation_controllers": {"controller.animation.find_biome": {"initial_state":"default","states": {"default": {"transitions": [`;
+   
+     let middle1 = middle2 = ``;
+   
+     
+     for (let i = 0; i < arr.length; i++) {
+			let text1 = ``;
+      let text2 = ``;
+
+       for (let j = 0; j < arr[i].tags.length; j++) {
+         text1 += `'${arr[i].tags[j]}', `;
+       }
+			 text1 = text1.slice(0, -2);
+			 if (arr[i].no_tags != undefined) {
+					for (let j = 0; j < arr[i].no_tags.length; j++) {
+						text2 += `'${arr[i].no_tags[j]}', `;
+					}
+					text2 = text2.slice(0, -2);
+       		middle1 += `{"${arr[i].id}": "query.biome_has_all_tags(${text1}) && !query.biome_has_all_tags(${text2})"},`
+			 } else {
+					middle1 += `{"${arr[i].id}": "query.biome_has_all_tags(${text1})"},`
+			 }
+       	 
+       //middle2 += `"${arr[i].id}": {"transitions": [{"default": "!query.biome_has_any_tag(${text})"}],"on_entry": ["/title @s actionbar Biome: ${arr[i].name}"]},`;
+
+       middle2 += `"${arr[i].id}": {"transitions": [{"default": "(1.0)"}],"on_entry": ["/title @s actionbar Biome: ${arr[i].name}"]},`;
+     }
+   
+     let end1 = `]},`;
+     let end2 = `}}}}`;
+   
+     return begin + middle1 + end1 + middle2 + end2;
+   }
+   
+   addEventListener("click", () => {
+     download(biomeHelperGeneration(biomes), `find_biome.json`, )
+   })
+</script>

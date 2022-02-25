@@ -1,0 +1,121 @@
+<style>
+
+  #cv {
+    border: 1px solid black;
+  }
+
+</style>
+
+<canvas id="cv"></canvas>
+
+<script>
+
+findIntersection = (line1, line2) => {
+    let d = (line1.dot1.x - line1.dot2.x) * 
+            (line2.dot1.y - line2.dot2.y) - 
+            (line1.dot1.y - line1.dot2.y) * 
+            (line2.dot1.x - line2.dot2.x);
+            
+    return {
+        x: ( (line1.dot1.x * line1.dot2.y - 
+              line1.dot1.y * line1.dot2.x) * 
+             (line2.dot1.x - line2.dot2.x) - 
+             (line2.dot1.x * line2.dot2.y - 
+              line2.dot1.y * line2.dot2.x) * 
+             (line1.dot1.x - line1.dot2.x) ) 
+             / d,
+        y: ( (line1.dot1.x * line1.dot2.y - 
+              line1.dot1.y * line1.dot2.x) * 
+             (line2.dot1.y - line2.dot2.y) - 
+             (line2.dot1.x * line2.dot2.y - 
+              line2.dot1.y * line2.dot2.x) * 
+             (line1.dot1.y - line1.dot2.y) ) 
+             / d
+    }
+}
+
+createLinearEquation = (dot1, dot2) => {
+  //a*x1 + b*y1 + c = 0 
+  //a*x2 + b*y2 + c = 0
+}
+
+let cv = document.querySelector(`#cv`);
+let side = 450;
+cv.width = side;
+cv.height = side;
+
+let ctx = cv.getContext(`2d`);
+
+class Dot{
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+class Line{
+  constructor(dot1, dot2) {
+    this.dot1 = dot1;
+    this.dot2 = dot2;
+  }
+}
+
+let strokes = [];
+
+strokes.push(
+  //Cross Line
+
+  new Line(new Dot(side, 0), new Dot(0, side)),
+  new Line(new Dot(0, 0), new Dot(side, side)),
+
+  //Horizontal Line
+
+  new Line(new Dot(side / 2, 0), new Dot(side / 2, side)),
+  new Line(new Dot(0, side / 2), new Dot(side, side / 2)),
+  
+  //
+
+  new Line(new Dot(side / 2, 0), new Dot(side, side / 2)),
+  new Line(new Dot(0, side / 2), new Dot(side / 2, side)),
+
+  //
+
+  new Line(new Dot(side * 3 / 4, 0), new Dot(side, side / 4)),
+  new Line(new Dot(0, side * 3 / 4), new Dot(side / 4, side)),
+
+  //
+
+  new Line(new Dot((side * 3 / 4) / 2, 0), new Dot((side * 3 / 4 ) / 2, side)),
+  new Line(new Dot(0, (side * 3 / 4) / 2), new Dot(side, (side * 3 / 4 )/ 2)),
+  new Line(new Dot((side / 4) + (side * 3 / 4) / 2, 0), new Dot((side / 4) + (side * 3 / 4 ) / 2, side)),
+  new Line(new Dot(0, (side / 4) + (side * 3 / 4) / 2), new Dot(side, (side / 4) + (side * 3 / 4 )/ 2)),
+
+  //
+
+  new Line(new Dot(side * 3 / 4, 0), new Dot(0, side * 3 / 4)),
+  new Line(new Dot(side, side / 4), new Dot(side / 4, side)),
+
+  //
+
+  new Line(new Dot(side * 7 / 8, 0), new Dot(0, side * 7 / 8)),
+  new Line(new Dot(side, side / 8), new Dot(side / 8, side)),
+
+  //
+
+  new Line(new Dot( (side * 7 / 8 + side / 4) / 2, (side / 8 + side * 3 / 4) / 2 ), new Dot(side, side)),
+)
+
+ctx.beginPath();
+
+for (let i = 0; i < strokes.length; i++) {
+  ctx.moveTo(strokes[i].dot1.x, strokes[i].dot1.y);
+  ctx.lineTo(strokes[i].dot2.x, strokes[i].dot2.y);
+}
+
+ctx.stroke();
+  
+
+console.log(findIntersection(new Line(new Dot((side * 3 / 4) / 2, 0), new Dot((side * 3 / 4 ) / 2, side)), 
+                             new Line(new Dot(0, (side * 3 / 4) / 2), new Dot(side, (side * 3 / 4 )/ 2))));
+
+</script>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <style>
+
+    * {
+      background-color: black;
+      color: white;
+      font-family: monospace;
+      padding: 0;
+      margin: 0;
+    }    
+
+  </style>
+
+</head>
+
+<body>
+
+  <div id="wrapper">
+
+    <input type="file" id="inputImages" accept=".png" multiple>
+    <br>
+    <button id="btn">DOWNLOAD IMAGES</button>
+
+    <button id="btn2">DOWNLOAD TEXT</button>
+  </div>
+
+  <script src="../JS/image/imageFunctions.js"></script>
+
+  <script src="../JS//miscellanous/urlToPromise.js"></script>
+
+  <script src="../JS/number/numberFunctions.js"></script>
+
+  <script src="../JS/downloadSomethings/downloadText.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.js" integrity="sha512-NOmoi96WK3LK/lQDDRJmrobxa+NMwVzHHAaLfxdy0DRHIBc6GZ44CRlYDmAKzg9j7tvq3z+FGRlJ4g+3QC2qXg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.js" integrity="sha512-B+gr+zLWg81qxVwvtYwKrmjvQtZKD/GGFF7jD80OfzbqFw+NsbS5faEqpCO7Q7oRw1bYi0+WLJf54j8Vm7NADw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.js" integrity="sha512-vzp9X4pwJHRiGSEH692sqmRe5R8OQNKSCe1zg38GQoNUGJtnPrwhwKF3lbaFZMsT8ZQ3ppZ8tlLqkJGosi5/CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script>
+
+class Color{
+  constructor(r, g, b, a) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    this.a = a;
+  }
+}
+
+let cv2 = [];
+let ctx2 = [];
+let names = [];
+let imageArrays = [];
+let imageData;
+
+let side = 16;
+let multiple = 1;
+let count = 0;
+
+// #8CDDFF, #8CDDFF, #00B3FF, #05CADC, #02C7AA
+
+let rgba = hexToRgb("000000");
+let num1 = 1;
+let color = new Color(
+  rgba.r * num1, 
+  rgba.g * num1, 
+  rgba.b * num1, 
+1);
+let maxD = 0;
+
+let inputImages = document.getElementById("inputImages");
+inputImages.addEventListener('change', (ev) => {
+  let length = ev.target.files.length;
+
+  for (let i = 0; i < length; i++) {
+    imageArrays[i] = [];
+  }
+
+  for (let i = 0; i < length; i++) {
+    if(ev.target.files) {
+      let file = ev.target.files[i];
+      names[i] = ev.target.files[i].name;
+
+      var reader  = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = function (e) {
+        let image = new Image();
+
+        image.src = e.target.result;
+        if (/.png$/.test(names[i])) {
+          image.onload = function(ev) {
+            let imgWidth = image.width;
+            let imgHeight = image.height;
+
+            count++;
+            let cv = document.createElement("canvas");
+            cv.width = imgWidth;
+            cv.height = imgHeight;
+
+            let ctx = cv.getContext("2d");
+            ctx.drawImage(image, 0, 0);
+
+            document.body.appendChild(cv);
+            
+            let br = document.createElement("br");
+            document.body.appendChild(br);
+
+            for (let j = 0; j < imgWidth; j++) {
+              imageArrays[i][j] = [];
+            }
+
+            for (let j = 0; j < imgWidth; j++) {
+              for (let k = 0; k < imgHeight; k++) {
+                imageData = ctx.getImageData(j, k, 1, 1);
+                
+                // imageArrays[i][j][k] = new Color(imageData.data[0], 
+                //                               imageData.data[1], 
+                //                               imageData.data[2], 
+                //                               imageData.data[3] / 255);
+
+                // Grayscale image
+
+                let avg = (imageData.data[0] + imageData.data[1] + imageData.data[2]) / 3;
+                imageArrays[i][j][k] = new Color(avg, avg, avg, imageData.data[3] / 255);
+              }
+            } 
+
+            cv2[i] = document.createElement("canvas");
+            cv2[i].width = imgWidth * multiple;
+            cv2[i].height = imgHeight * multiple;
+
+            ctx2[i] = cv2[i].getContext("2d");
+
+            drawImageFromArray(ctx2[i], imageArrays[i], color, multiple, maxD);
+
+            document.body.appendChild(cv2[i]);
+
+            let p = document.createElement("p");
+            p.innerHTML = names[i];
+            document.body.appendChild(p);
+
+            let br2 = document.createElement("br");
+            document.body.appendChild(br2);
+          }
+        }
+      }
+    }
+  }
+
+  let res = '';
+
+  for (let i = 0; i < names.length; i++) {
+    res += '"' + names[i] + '" ';
+  }
+
+  let p = document.createElement("p");
+  p.innerHTML = res;
+  document.body.appendChild(p);
+});
+
+let btn = document.querySelector("#btn");
+btn.addEventListener('click', (ev) => {
+  let zip = new JSZip();
+
+  for (let i = 0; i < cv2.length; i++) {
+    zip.file(`${names[i]}`, urlToPromise(cv2[i].toDataURL()), {binary: true});
+  }
+
+  zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
+    saveAs(blob, `ui.zip`);
+  });
+})
+  </script>
+
+</body>
+
+</html>
