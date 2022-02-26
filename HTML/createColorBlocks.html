@@ -292,18 +292,29 @@
 
   zipImages = () => {
     var zip = new JSZip();
-    let prefixs = [`bookshelf`, `concrete`, `glass`, `plank`, `slab`, `stair`];
+    let prefixs = [
+      `bookshelf`, 
+      `concrete`, 
+      `glass`, 
+      `plank`, 
+      `slab`, 
+      `stair`, 
+      `stone_andesite`, 
+      `stone_diorite`, 
+      `stone_granite`, 
+    ];
+    let index = 8;
     
     for (let i = 0; i < colors.length; i++) {
       //JSZip download text
       //zip.file(`${lootTableName[i]}.json`, encodeText() );
       
       //JSZip download canvas image
-      zip.file(`stone_granite_${colors[i].id}.png`, urlToPromise(cv[i].toDataURL()), {binary: true});
+      zip.file(`${prefixs[index]}_${colors[i].id}.png`, urlToPromise(cv[i].toDataURL()), {binary: true});
     }
 
     zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
-      saveAs(blob, `images.zip`);
+      saveAs(blob, `${prefixs[index]}.zip`);
     });
   }
 
