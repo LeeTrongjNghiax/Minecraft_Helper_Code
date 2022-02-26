@@ -1,5 +1,5 @@
 createBlock = (block, ns, prefix) => {
-  let coma = (prefix[prefix.length - 1] == `s`) ? `es` : `s`;
+  let s = (prefix[prefix.length - 1] == `s`) ? `es` : `s`;
 
   let text = `{
 "format_version": "1.17.0",
@@ -8,7 +8,7 @@ createBlock = (block, ns, prefix) => {
     "identifier": "${ns}:${prefix}_${block.id}"
   },
   "components": {
-    "minecraft:loot": "loot_tables/blocks/${prefix}${coma}/${prefix}_${block.id}.json",
+    "minecraft:loot": "loot_tables/blocks/${prefix}${s}/${prefix}_${block.id}.json",
     "minecraft:material_instances": {
       "*": {
         "texture": "${prefix}_${block.id}",

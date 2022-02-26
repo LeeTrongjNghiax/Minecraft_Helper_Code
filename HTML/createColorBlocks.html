@@ -17,7 +17,12 @@
   <br>
   <button id="downloadImages">2. DOWNLOAD IMAGES</button>
   <br>
+  <button id="downloadTexts">3. DOWNLOAD TEXTS</button>
+  <br>
+  <button id="downloadText">3. DOWNLOAD TEXT</button>
+  <br>
   <canvas id="drawOneImage"></canvas>
+  <p id="text"></p>
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.js" integrity="sha512-NOmoi96WK3LK/lQDDRJmrobxa+NMwVzHHAaLfxdy0DRHIBc6GZ44CRlYDmAKzg9j7tvq3z+FGRlJ4g+3QC2qXg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -52,7 +57,22 @@
 
 <script src="../JS/text/textFunctions.js"></script>
 
+<script src="../modules/minecraft/blocks/blocks/createBlock.js"></script>
+
+<script src="../modules/minecraft/blocks/recipes/createStoneRecipe.js"></script>
+
+<script src="../modules/minecraft/blocks/textureList/createStoneBlockTextureList.js"></script>
+
 <script>
+  // const express = require("express");
+  // const app = express();
+  // const cors = require("cors");
+  // app.use(
+  //   cors({
+  //     origin: "*"
+  //   })
+  // )
+
   class Color{
     constructor(r, g, b, a) {
       this.r = r;
@@ -289,6 +309,23 @@
   });
 
   document.querySelector("#downloadImages").addEventListener('click', () => zipImages() );
+  document.querySelector("#downloadTexts").addEventListener('click', () => zipFiles() )
+  document.querySelector("#downloadText").addEventListener('click', () => {
+    let prefixs = [
+      `bookshelf`, 
+      `concrete`, 
+      `glass`, 
+      `plank`, 
+      `slab`, 
+      `stair`, 
+      `stone_andesite`, 
+      `stone_diorite`, 
+      `stone_granite`, 
+    ];
+    let index = 8;
+
+    downloadText("terrain_texture.json", createStoneBlockTextureList(colors, prefixs[index]) )
+  })
 
   zipImages = () => {
     var zip = new JSZip();
@@ -305,12 +342,37 @@
     ];
     let index = 8;
     
-    for (let i = 0; i < colors.length; i++) {
-      //JSZip download text
-      //zip.file(`${lootTableName[i]}.json`, encodeText() );
-      
+    for (let i = 0; i < colors.length; i++) {      
       //JSZip download canvas image
       zip.file(`${prefixs[index]}_${colors[i].id}.png`, urlToPromise(cv[i].toDataURL()), {binary: true});
+    }
+
+    zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
+      saveAs(blob, `${prefixs[index]}_images.zip`);
+    });
+  }
+
+  zipFiles = () => {
+    var zip = new JSZip();
+    let prefixs = [
+      `bookshelf`, 
+      `concrete`, 
+      `glass`, 
+      `plank`, 
+      `slab`, 
+      `stair`, 
+      `stone_andesite`, 
+      `stone_diorite`, 
+      `stone_granite`, 
+    ];
+    let index = 8;
+    
+    for (let i = 0; i < colors.length; i++) {
+      // JSZip download block beh
+      zip.file(`${prefixs[index]}_${colors[i].id}.json`, createBlock(colors[i], "cb", prefixs[index]) );
+
+      // JSZip download block recipe
+      // zip.file(`${prefixs[index]}_${colors[i].id}.json`, createStoneRecipe(colors[i], "cb", prefixs[index]) );
     }
 
     zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
