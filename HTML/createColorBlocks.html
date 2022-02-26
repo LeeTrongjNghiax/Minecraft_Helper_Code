@@ -63,6 +63,8 @@
 
 <script src="../modules/minecraft/blocks/textureList/createStoneBlockTextureList.js"></script>
 
+<script src="../modules/minecraft/functions/give_function.js"></script>
+
 <script>
   // const express = require("express");
   // const app = express();
@@ -369,14 +371,19 @@
     
     for (let i = 0; i < colors.length; i++) {
       // JSZip download block beh
-      zip.file(`${prefixs[index]}_${colors[i].id}.json`, createBlock(colors[i], "cb", prefixs[index]) );
+      // zip.file(`${prefixs[index]}_${colors[i].id}.json`, createBlock(colors[i], "cb", prefixs[index]) );
 
       // JSZip download block recipe
       // zip.file(`${prefixs[index]}_${colors[i].id}.json`, createStoneRecipe(colors[i], "cb", prefixs[index]) );
     }
 
+    for (let i = 1; i < 6; i++) {
+      // JSZip download give function
+      zip.file(`give_${prefixs[index]}_${i}.mcfunction`, giveFunction(colors, "cb", prefixs[index], i) );
+    }
+
     zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
-      saveAs(blob, `${prefixs[index]}.zip`);
+      saveAs(blob, `give_${prefixs[index]}.zip`);
     });
   }
 
