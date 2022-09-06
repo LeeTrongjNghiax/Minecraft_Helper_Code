@@ -1,3 +1,5 @@
+capitalizeWords = string => string.charAt(0).toUpperCase() + string.slice(1);
+
 encodeText = (text) => {
   let alphabet = `:ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz`
 

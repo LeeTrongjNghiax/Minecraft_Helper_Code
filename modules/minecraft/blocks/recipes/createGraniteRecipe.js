@@ -1,29 +1,29 @@
-createStoneRecipe = (block, ns, stone, id) => `{
+createGraniteRecipe = (block, ns) => `{
   "format_version": "1.16.100",
   "minecraft:recipe_shaped": {
     "description": {
-      "identifier": "${ns}:${stone}_${block.id}_crafted"
+      "identifier": "${ns}:granite_${block.id}_crafted"
     },
     "tags": [
       "crafting_table"
     ],
     "pattern": [
-      "WWW",
-      "WDW",
-      "WWW"
+      "AAA",
+      "ADA",
+      "AAA"
     ],
     "key": {
-      "W": {
-        "item": "minecraft:${stone}",
-        "data": ${id}
+      "A": {
+        "item": "minecraft:stone",
+        "data": 1
       },
       "D": {
         "item": "${ns}:dye_powder_${block.id}"
       }
     },
     "result": {
-      "item": "${ns}:${stoneType}_${block.id}",
-      "count": 8
+      "item": "${ns}:granite_${block.id}",
+      "count": 1
     }
   }
 }`;

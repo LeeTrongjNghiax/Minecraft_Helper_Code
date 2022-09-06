@@ -65,6 +65,14 @@
 
 <script src="../modules/minecraft/functions/give_function.js"></script>
 
+<script src="../modules/minecraft/blocks/recipes/createAndesiteRecipe.js"></script>
+
+<script src="../modules/minecraft/blocks/recipes/createDioriteRecipe.js"></script>
+
+<script src="../modules/minecraft/blocks/recipes/createGraniteRecipe.js"></script>
+
+<script src="../modules/minecraft/blocks/lang/createLang.js"></script>
+
 <script>
   // const express = require("express");
   // const app = express();
@@ -306,7 +314,7 @@
       cv[i].addEventListener("mousemove", () => {        
         var pixelData = cv[i].getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data; 
         document.querySelector("#output").innerHTML = ('R: ' + pixelData[0] + '<br>G: ' + pixelData[1] + '<br>B: ' + pixelData[2] + '<br>A: ' + pixelData[3]);
-      })
+      }) 
     }
   });
 
@@ -320,13 +328,15 @@
       `plank`, 
       `slab`, 
       `stair`, 
-      `stone_andesite`, 
-      `stone_diorite`, 
-      `stone_granite`, 
+
+      `andesite`, 
+      `diorite`, 
+      `granite`, 
     ];
     let index = 8;
 
-    downloadText("terrain_texture.json", createStoneBlockTextureList(colors, prefixs[index]) )
+    // downloadText("terrain_texture.json", createStoneBlockTextureList(colors, prefixs[index]) )
+    downloadText("en_US.lang", createLang(colors, "Granite", "cb") );
   })
 
   zipImages = () => {
@@ -338,9 +348,10 @@
       `plank`, 
       `slab`, 
       `stair`, 
-      `stone_andesite`, 
-      `stone_diorite`, 
-      `stone_granite`, 
+
+      `andesite`, 
+      `diorite`, 
+      `granite`, 
     ];
     let index = 8;
     
@@ -350,7 +361,7 @@
     }
 
     zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
-      saveAs(blob, `${prefixs[index]}_images.zip`);
+      saveAs(blob, `${prefixs[index]}s.zip`);
     });
   }
 
@@ -363,9 +374,10 @@
       `plank`, 
       `slab`, 
       `stair`, 
-      `stone_andesite`, 
-      `stone_diorite`, 
-      `stone_granite`, 
+
+      `andesite`, 
+      `diorite`, 
+      `granite`, 
     ];
     let index = 8;
     
@@ -374,16 +386,16 @@
       // zip.file(`${prefixs[index]}_${colors[i].id}.json`, createBlock(colors[i], "cb", prefixs[index]) );
 
       // JSZip download block recipe
-      // zip.file(`${prefixs[index]}_${colors[i].id}.json`, createStoneRecipe(colors[i], "cb", prefixs[index]) );
+      zip.file(`${prefixs[index]}_${colors[i].id}.json`, createGraniteRecipe(colors[i], "cb", prefixs[index]) );
     }
 
-    for (let i = 1; i < 6; i++) {
-      // JSZip download give function
-      zip.file(`give_${prefixs[index]}_${i}.mcfunction`, giveFunction(colors, "cb", prefixs[index], i) );
-    }
+    // for (let i = 1; i < 6; i++) {
+    //   // JSZip download give function
+    //   zip.file(`give_${prefixs[index]}_${i}.mcfunction`, giveFunction(colors, "cb", prefixs[index], i) );
+    // }
 
     zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
-      saveAs(blob, `give_${prefixs[index]}.zip`);
+      saveAs(blob, `${prefixs[index]}s.zip`);
     });
   }
 

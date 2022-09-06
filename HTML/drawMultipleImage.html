@@ -65,12 +65,20 @@ let count = 0;
 
 // #8CDDFF, #8CDDFF, #00B3FF, #05CADC, #02C7AA
 
-let rgba = hexToRgb("000000");
-let num1 = 1;
+// Wood: 866426
+// Gold: e9b015
+// Stone: b3b1af
+// Iron: bebebe
+// Diamond: a3fdef
+// Netherite: 51444e
+
+let color2 = hexToRgb("000000");
+let rgba = hexToRgb("51444e");
+let num1 = 2;
 let color = new Color(
-  rgba.r * num1, 
-  rgba.g * num1, 
-  rgba.b * num1, 
+  (rgba.r) * num1, 
+  (rgba.g) * num1, 
+  (rgba.b) * num1, 
 1);
 let maxD = 0;
 
@@ -119,15 +127,20 @@ inputImages.addEventListener('change', (ev) => {
               for (let k = 0; k < imgHeight; k++) {
                 imageData = ctx.getImageData(j, k, 1, 1);
                 
-                // imageArrays[i][j][k] = new Color(imageData.data[0], 
-                //                               imageData.data[1], 
-                //                               imageData.data[2], 
-                //                               imageData.data[3] / 255);
+                imageArrays[i][j][k] = new Color(imageData.data[0], 
+                                              imageData.data[1], 
+                                              imageData.data[2], 
+                                              imageData.data[3] / 255);
+
+                imageArrays[i][j][k] = new Color(imageData.data[0] - color2.r, 
+                                              imageData.data[1] - color2.g, 
+                                              imageData.data[2] - color2.b, 
+                                              imageData.data[3] / 255);
 
                 // Grayscale image
 
-                let avg = (imageData.data[0] + imageData.data[1] + imageData.data[2]) / 3;
-                imageArrays[i][j][k] = new Color(avg, avg, avg, imageData.data[3] / 255);
+                // let avg = (imageData.data[0] + imageData.data[1] + imageData.data[2]) / 3;
+                // imageArrays[i][j][k] = new Color(avg, avg, avg, imageData.data[3] / 255);
               }
             } 
 

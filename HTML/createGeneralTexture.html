@@ -27,6 +27,8 @@
   <canvas id="drawOneImage"></canvas>
 </body>
 
+<script src="../JS/globalValues.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.js" integrity="sha512-NOmoi96WK3LK/lQDDRJmrobxa+NMwVzHHAaLfxdy0DRHIBc6GZ44CRlYDmAKzg9j7tvq3z+FGRlJ4g+3QC2qXg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.js" integrity="sha512-B+gr+zLWg81qxVwvtYwKrmjvQtZKD/GGFF7jD80OfzbqFw+NsbS5faEqpCO7Q7oRw1bYi0+WLJf54j8Vm7NADw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -59,9 +61,165 @@
 
 <script src="../JS/text/textFunctions.js"></script>
 
+<script src="../JS/minecraft/createWeapons/createAxe.js"></script>
+
+<script src="../JS/minecraft/createWeapons/createBattleAxe.js"></script>
+
+<script src="../JS/minecraft/createWeapons/createDagger.js"></script>
+
+<script src="../JS/minecraft/createWeapons/createHammer.js"></script>
+
+<script src="../JS/minecraft/createWeapons/createKama.js"></script>
+
+<script src="../JS/minecraft/createWeapons/createKukri.js"></script>
+
+<script src="../JS/minecraft/createWeapons/createMachete.js"></script>
+
+<script src="../JS/minecraft/createWeapons/createScythe.js"></script>
+
+<script src="../JS/minecraft/createWeapons/createSickle.js"></script>
+
+<script src="../JS/minecraft/createWeapons/createSpear.js"></script>
+
+<script src="../JS/minecraft/createWeapons/createSword.js"></script>
+
+<script src="../JS/minecraft/createWeapons/createTrident.js"></script>
+
+<script src="../JS/minecraft/createArmor.js"></script>
+
+<script src="../JS/minecraft/createAttachable.js"></script>
+
+<script src="../JS/minecraft/createWeaponsTierRecipe.js"></script>
+
 <script>
 
 //INIT
+
+class Weapon{
+  constructor(id, name, damage, durability, material, effect_id, effect_duration, effect_level) {
+    this.id = id;
+    this.name = name;
+    this.damage = damage;
+    this.durability = durability;
+    this.material = material;
+    this.effect_id = effect_id;
+    this.effect_duration = effect_duration;
+    this.effect_level = effect_level;
+  }
+}
+
+let weapons = [];
+
+weapons.push(
+  [
+    new Weapon("axe", "Stone axe", 9, 500, "stone", "fatal_poison", 0, 0),
+    new Weapon("axe", "Iron axe", 1, 1, "iron"),
+    new Weapon("axe", "Gold axe", 1, 1, "gold"),
+    new Weapon("axe", "Redstone axe", 1, 1, "redstone"),
+    new Weapon("axe", "Emerald axe", 1, 1, "emerald"),
+    new Weapon("axe", "Diamond axe", 1, 1, "diamond"),
+    new Weapon("axe", "Netherite axe", 1, 1, "netherite"),
+  ],
+  [
+    new Weapon("battle_axe", "Stone Battle axe", 12, 500, "stone", "fatal_poison", 0, 0),
+    new Weapon("battle_axe", "Iron Battle axe", 1, 1, "iron"),
+    new Weapon("battle_axe", "Gold Battle axe", 1, 1, "gold"),
+    new Weapon("battle_axe", "Redstone Battle axe", 1, 1, "redstone"),
+    new Weapon("battle_axe", "Emerald Battle axe", 1, 1, "emerald"),
+    new Weapon("battle_axe", "Diamond Battle axe", 1, 1, "diamond"),
+    new Weapon("battle_axe", "Netherite Battle axe", 1, 1, "netherite"),
+  ],
+  [
+    new Weapon("dagger", "Stone dagger", 7, 500, "stone", "weakness", 0, 0),
+    new Weapon("dagger", "Iron dagger", 1, 1, "iron"),
+    new Weapon("dagger", "Gold dagger", 1, 1, "gold"),
+    new Weapon("dagger", "Redstone dagger", 1, 1, "redstone"),
+    new Weapon("dagger", "Emerald dagger", 1, 1, "emerald"),
+    new Weapon("dagger", "Diamond dagger", 1, 1, "diamond"),
+    new Weapon("dagger", "Netherite dagger", 1, 1, "netherite"),
+  ],
+  [
+    new Weapon("hammer", "Stone hammer", 8, 500, "stone", "nausea", 0, 0),
+    new Weapon("hammer", "Iron hammer", 1, 1, "iron"),
+    new Weapon("hammer", "Gold hammer", 1, 1, "gold"),
+    new Weapon("hammer", "Redstone hammer", 1, 1, "redstone"),
+    new Weapon("hammer", "Emerald hammer", 1, 1, "emerald"),
+    new Weapon("hammer", "Diamond hammer", 1, 1, "diamond"),
+    new Weapon("hammer", "Netherite hammer", 1, 1, "netherite"),
+  ],
+  [
+    new Weapon("kama", "Stone kama", 9.5, 500, "stone", "blindness", 0, 0),
+    new Weapon("kama", "Iron kama", 1, 1, "iron"),
+    new Weapon("kama", "Gold kama", 1, 1, "gold"),
+    new Weapon("kama", "Redstone kama", 1, 1, "redstone"),
+    new Weapon("kama", "Emerald kama", 1, 1, "emerald"),
+    new Weapon("kama", "Diamond kama", 1, 1, "diamond"),
+    new Weapon("kama", "Netherite kama", 1, 1, "netherite"),
+  ],
+  [
+    new Weapon("kukri", "Stone kukri", 8.5, 500, "stone", "blindness", 0, 0),
+    new Weapon("kukri", "Iron kukri", 1, 1, "iron"),
+    new Weapon("kukri", "Gold kukri", 1, 1, "gold"),
+    new Weapon("kukri", "Redstone kukri", 1, 1, "redstone"),
+    new Weapon("kukri", "Emerald kukri", 1, 1, "emerald"),
+    new Weapon("kukri", "Diamond kukri", 1, 1, "diamond"),
+    new Weapon("kukri", "Netherite kukri", 1, 1, "netherite"),
+  ],
+  [
+    new Weapon("machete", "Stone machete", 8, 500, "stone", "weakness", 0, 0),
+    new Weapon("machete", "Iron machete", 1, 1, "iron"),
+    new Weapon("machete", "Gold machete", 1, 1, "gold"),
+    new Weapon("machete", "Redstone machete", 1, 1, "redstone"),
+    new Weapon("machete", "Emerald machete", 1, 1, "emerald"),
+    new Weapon("machete", "Diamond machete", 1, 1, "diamond"),
+    new Weapon("machete", "Netherite machete", 1, 1, "netherite"),
+  ],
+  [
+    new Weapon("scythe", "Stone scythe", 7.5, 500, "stone", "poison", 0, 0),
+    new Weapon("scythe", "Iron scythe", 1, 1, "iron"),
+    new Weapon("scythe", "Gold scythe", 1, 1, "gold"),
+    new Weapon("scythe", "Redstone scythe", 1, 1, "redstone"),
+    new Weapon("scythe", "Emerald scythe", 1, 1, "emerald"),
+    new Weapon("scythe", "Diamond scythe", 1, 1, "diamond"),
+    new Weapon("scythe", "Netherite scythe", 1, 1, "netherite"),
+  ],
+  [
+    new Weapon("sickle", "Stone sickle", 8, 500, "stone", "slowness", 0, 0),
+    new Weapon("sickle", "Iron sickle", 1, 1, "iron"),
+    new Weapon("sickle", "Gold sickle", 1, 1, "gold"),
+    new Weapon("sickle", "Redstone sickle", 1, 1, "redstone"),
+    new Weapon("sickle", "Emerald sickle", 1, 1, "emerald"),
+    new Weapon("sickle", "Diamond sickle", 1, 1, "diamond"),
+    new Weapon("sickle", "Netherite sickle", 1, 1, "netherite"),
+  ],
+  [
+    new Weapon("spear", "Stone spear", 9, 500, "stone", "instant_damage", 0, 0),
+    new Weapon("spear", "Iron spear", 1, 1, "iron"),
+    new Weapon("spear", "Gold spear", 1, 1, "gold"),
+    new Weapon("spear", "Redstone spear", 1, 1, "redstone"),
+    new Weapon("spear", "Emerald spear", 1, 1, "emerald"),
+    new Weapon("spear", "Diamond spear", 1, 1, "diamond"),
+    new Weapon("spear", "Netherite spear", 1, 1, "netherite"),
+  ],
+  [
+    new Weapon("sword", "Stone Sword", 10, 500, "stone", "wither", 0, 0),
+    new Weapon("sword", "Iron Sword", 1, 1, "iron"),
+    new Weapon("sword", "Gold Sword", 1, 1, "gold"),
+    new Weapon("sword", "Redstone Sword", 1, 1, "redstone"),
+    new Weapon("sword", "Emerald Sword", 1, 1, "emerald"),
+    new Weapon("sword", "Diamond Sword", 1, 1, "diamond"),
+    new Weapon("sword", "Netherite Sword", 1, 1, "netherite"),
+  ],
+  [
+    new Weapon("trident", "Stone trident", 9, 500, "stone", "wither", 0, 0),
+    new Weapon("trident", "Iron trident", 1, 1, "iron"),
+    new Weapon("trident", "Gold trident", 1, 1, "gold"),
+    new Weapon("trident", "Redstone trident", 1, 1, "redstone"),
+    new Weapon("trident", "Emerald trident", 1, 1, "emerald"),
+    new Weapon("trident", "Diamond trident", 1, 1, "diamond"),
+    new Weapon("trident", "Netherite trident", 1, 1, "netherite"),
+  ],
+)
 
 class Color{
   constructor(r, g, b, a) {
@@ -79,6 +237,21 @@ class Bound{
   }
 }
 
+class Armors{
+  constructor(id, name, category, enchantable, render, wearable, protection, durability, material, visible) {
+    this.id = id;
+    this.name = name;
+    this.category = category;
+    this.enchantable = enchantable;
+    this.render = render;
+    this.wearable = wearable;
+    this.protection = protection;
+    this.durability = durability;
+    this.material = material;
+    this.visible = visible;
+  }
+}
+
 let side = 16;
 let side1 = 0;
 let multiple = 10;
@@ -89,16 +262,6 @@ let imagePixel = [];
 for (let i = 0; i < side; i++) {
   imagePixel[i] = [];
 }
-
-let cv = document.getElementById('loadImage');
-cv.width = side;
-cv.height = side;
-let ctx = cv.getContext('2d');
-
-let cv2 = document.getElementById('drawOneImage');
-cv2.width = side;
-cv2.height = side;
-let ctx2 = cv2.getContext('2d');
 
 let damage = new Bound(8, 20);
 let damaged = new Bound(1, 1000);
@@ -630,6 +793,57 @@ let isAddPixelSword = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
+let armors = [];
+
+armors.push(
+  [
+    new Armors("boots", "Boots", "boots", "feet", "boots", "feet", 9, 1500, "diamond", "boot"),
+    new Armors("boots", "Boots", "boots", "feet", "boots", "feet", 9, 1500, "emerald", "boot"),
+    new Armors("boots", "Boots", "boots", "feet", "boots", "feet", 9, 1500, "gold", "boot"),
+    new Armors("boots", "Boots", "boots", "feet", "boots", "feet", 9, 1500, "iron", "boot"),
+    new Armors("boots", "Boots", "boots", "feet", "boots", "feet", 9, 1500, "netherite", "boot"),
+    new Armors("boots", "Boots", "boots", "feet", "boots", "feet", 9, 1500, "redstone", "boot"),
+    new Armors("boots", "Boots", "boots", "feet", "boots", "feet", 9, 1500, "stone", "boot"),
+  ],
+  [
+    new Armors("chestplate", "Chestplate", "chestplate", "torso", "chestplates", "chest", 9, 1500, "diamond", "chest"),
+    new Armors("chestplate", "Chestplate", "chestplate", "torso", "chestplates", "chest", 9, 1500, "emerald", "chest"),
+    new Armors("chestplate", "Chestplate", "chestplate", "torso", "chestplates", "chest", 9, 1500, "gold", "chest"),
+    new Armors("chestplate", "Chestplate", "chestplate", "torso", "chestplates", "chest", 9, 1500, "iron", "chest"),
+    new Armors("chestplate", "Chestplate", "chestplate", "torso", "chestplates", "chest", 9, 1500, "netherite", "chest"),
+    new Armors("chestplate", "Chestplate", "chestplate", "torso", "chestplates", "chest", 9, 1500, "redstone", "chest"),
+    new Armors("chestplate", "Chestplate", "chestplate", "torso", "chestplates", "chest", 9, 1500, "stone", "chest"),
+  ],
+  [
+    new Armors("helmet", "Helmet", "helmet", "head", "helmets", "head", 9, 1500, "diamond", "helmet"),
+    new Armors("helmet", "Helmet", "helmet", "head", "helmets", "head", 9, 1500, "emerald", "helmet"),
+    new Armors("helmet", "Helmet", "helmet", "head", "helmets", "head", 9, 1500, "gold", "helmet"),
+    new Armors("helmet", "Helmet", "helmet", "head", "helmets", "head", 9, 1500, "iron", "helmet"),
+    new Armors("helmet", "Helmet", "helmet", "head", "helmets", "head", 9, 1500, "netherite", "helmet"),
+    new Armors("helmet", "Helmet", "helmet", "head", "helmets", "head", 9, 1500, "redstone", "helmet"),
+    new Armors("helmet", "Helmet", "helmet", "head", "helmets", "head", 9, 1500, "stone", "helmet"),
+  ],
+  [
+    new Armors("leggings", "Leggings", "leggings", "legs", "leggings", "legs", 9, 1500, "diamond", "leg"),
+    new Armors("leggings", "Leggings", "leggings", "legs", "leggings", "legs", 9, 1500, "emerald", "leg"),
+    new Armors("leggings", "Leggings", "leggings", "legs", "leggings", "legs", 9, 1500, "gold", "leg"),
+    new Armors("leggings", "Leggings", "leggings", "legs", "leggings", "legs", 9, 1500, "iron", "leg"),
+    new Armors("leggings", "Leggings", "leggings", "legs", "leggings", "legs", 9, 1500, "netherite", "leg"),
+    new Armors("leggings", "Leggings", "leggings", "legs", "leggings", "legs", 9, 1500, "redstone", "leg"),
+    new Armors("leggings", "Leggings", "leggings", "legs", "leggings", "legs", 9, 1500, "stone", "leg"),
+  ],
+)
+
+let cv = document.getElementById('loadImage');
+cv.width = side;
+cv.height = side;
+let ctx = cv.getContext('2d');
+
+let cv2 = document.getElementById('drawOneImage');
+cv2.width = side;
+cv2.height = side;
+let ctx2 = cv2.getContext('2d');
+
 //FUNCTION
 
 zipImages = (numberOfImages) => {
@@ -653,42 +867,69 @@ zipImages = (numberOfImages) => {
   });
 }
 
-zipTexts = (numberOfTexts) => {
+zipTexts = weapons => {
   let zip = new JSZip();
-  let longNormal = 16;
-  let strongNormal = 1;
 
-  for (let i = 0; i < swords.length; i++) {
-    //Create item
+  //Create item
 
-    for (let j = 0; j < effects.length; j++) {
-      zip.file(`${swords[i].type}/${effects[j].effect}_${swords[i].type}_sword.json`, (creatSwordJson(swords[i], effects[j], longNormal, strongNormal, "", "")), {binary: true});
-      let prefix = "long_";
-      zip.file(`${swords[i].type}/${prefix}${effects[j].effect}_${swords[i].type}_sword.json`, (creatSwordJson(swords[i], effects[j], longNormal * 2, strongNormal, prefix, "Long ")), {binary: true});
-      prefix = "strong_";
-      zip.file(`${swords[i].type}/${prefix}${effects[j].effect}_${swords[i].type}_sword.json`, (creatSwordJson(swords[i], effects[j], longNormal, strongNormal * 2, prefix, "Strong ")), {binary: true});
+  for (let i = 0; i < weapons.length; i++) {
+    for (let j = 0; j < weapons[i].length; j++) {
+      weapons[i][j].damage = weapons[i][0].damage + j;
+      weapons[i][j].durability += weapons[i][0].durability * j;
+      weapons[i][j].effect_id = weapons[i][0].effect_id;
+      weapons[i][j].effect_duration = 1 * j;
+      weapons[i][j].effect_level = 0.5 * j;
+      switch (weapons[i][j].id) {
+        case "axe":       
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createAxeJson(weapons[i][j])), {binary: true});
+          break;
+        case "battle_axe": 
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createBattleAxeJson(weapons[i][j])), {binary: true});
+          break;
+        case "dagger": 
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createDaggerJson(weapons[i][j])), {binary: true});
+          break;
+        case "hammer": 
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createHammerJson(weapons[i][j])), {binary: true});
+          break;
+        case "kama": 
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createKamaJson(weapons[i][j])), {binary: true});
+          break;
+        case "kukri": 
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createKukriJson(weapons[i][j])), {binary: true});
+          break;
+        case "machete": 
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createMacheteJson(weapons[i][j])), {binary: true});
+          break;
+        case "scythe": 
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createScytheJson(weapons[i][j])), {binary: true});
+          break;
+        case "sickle": 
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createSickleJson(weapons[i][j])), {binary: true});
+          break;
+        case "spear": 
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createSpearJson(weapons[i][j])), {binary: true});
+          break;
+        case "sword": 
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createSwordJson(weapons[i][j])), {binary: true});
+          break;
+        case "trident": 
+          zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createTridentJson(weapons[i][j])), {binary: true});
+          break;
+      }
     }
-
-    //Create recipe
-
-    // for (let j = 0; j < effects.length; j++) {
-    //   if (effects[j].data.regular != null) {
-    //     let prefix = "";
-    //     zip.file(`${swords[i].type}/${effects[j].effect}_${swords[i].type}_sword.json`, (createSwordRecipe(swords[i], effects[j], prefix, effects[j].data.regular)), {binary: true})
-    //   }
-    //   if (effects[j].data.long != null) {
-    //     let prefix = "long_";
-    //     zip.file(`${swords[i].type}/${prefix}${effects[j].effect}_${swords[i].type}_sword.json`, (createSwordRecipe(swords[i], effects[j], prefix, effects[j].data.long)), {binary: true})
-    //   }
-    //   if (effects[j].data.strong != null) {
-    //     let prefix = "strong_";
-    //     zip.file(`${swords[i].type}/${prefix}${effects[j].effect}_${swords[i].type}_sword.json`, (createSwordRecipe(swords[i], effects[j], prefix, effects[j].data.strong)), {binary: true})
-    //   }
-    // }
   }
 
+  // for (let i = 0; i < armors.length; i++) {
+  //   for (let j = 0; j < armors[i].length; j++) {
+  //     zip.file(`${armors[i][j].material}/${armors[i][j].material}_${armors[i][j].id}.json`, (createArmorJson(armors[i][j])), {binary: true});
+  //     // zip.file(`${armors[i][j].material}/${armors[i][j].material}_${armors[i][j].id}.json`, (createAttachableJson(armors[i][j])), {binary: true});
+  //     // zip.file(`${weapons[i][j].material}/${weapons[i][j].material}_${weapons[i][j].id}.json`, (createWeaponsTierRecipe(weapons[i][j], weapons[i][j - 1].material)), {binary: true});
+  //   }
+  // }
+
   zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
-    saveAs(blob, `swordTexts.zip`);
+    saveAs(blob, `armors.zip`);
   });
 }
 
@@ -715,8 +956,8 @@ document.querySelector('#drawImages').addEventListener('click', () => {
   //drawImageFromArray(ctx2, imagePixel, effects[1].color, null2DArray);
 });
 document.querySelector("#downloadImages").addEventListener('click', () => zipImages(((effects.length * 3) - 1)));
-document.querySelector("#downloadTexts").addEventListener('click', () => zipTexts(numberOfSwords));
-document.querySelector("#downloadText").addEventListener('click', () => downloadText("testSword.json", (deleteSpace(text)) ));
+document.querySelector("#downloadTexts").addEventListener('click', () => zipTexts(weapons));
+document.querySelector("#downloadText").addEventListener('click', () => downloadText("item_textures.json", testFuc()));
 document.querySelector("#downloadItemTexture").addEventListener('click', 
   () => {
     //downloadText("item_texture.json", encodeText(deleteSpace(createItemTexture(createItemTextureList(effects, swords)))))
@@ -725,6 +966,26 @@ document.querySelector("#downloadItemTexture").addEventListener('click',
 );
 
 document.addEventListener('keydown', (ev) => keyboardEvent());
+
+testFuc = () => {
+  let text1 = `{
+	"resource_pack_name": "vanilla",
+	"texture_name": "atlas.items",
+	"texture_data": {`;
+
+  for (let i = 0; i < weapons.length; i++) {
+    for (let j = 0; j < weapons[i].length; j++) {
+      text1 += `\n\t\t"nw_${weapons[i][j].material}_${weapons[i][j].id}": {
+      "textures": "textures/items/${weapons[i][j].material}/nw_${weapons[i][j].material}_${weapons[i][j].id}"
+    },`;
+    }
+  }
+
+  text1 += `}
+}`;
+
+  return text1;
+}
 
 keyboardEvent = (ev) => {
   switch (ev) {
