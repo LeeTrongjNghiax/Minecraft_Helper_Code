@@ -1,0 +1,136 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.js" integrity="sha512-NOmoi96WK3LK/lQDDRJmrobxa+NMwVzHHAaLfxdy0DRHIBc6GZ44CRlYDmAKzg9j7tvq3z+FGRlJ4g+3QC2qXg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.js" integrity="sha512-B+gr+zLWg81qxVwvtYwKrmjvQtZKD/GGFF7jD80OfzbqFw+NsbS5faEqpCO7Q7oRw1bYi0+WLJf54j8Vm7NADw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.js" integrity="sha512-vzp9X4pwJHRiGSEH692sqmRe5R8OQNKSCe1zg38GQoNUGJtnPrwhwKF3lbaFZMsT8ZQ3ppZ8tlLqkJGosi5/CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+
+getRandInt = (min, max) => Math.floor(Math.random() * (max - min) + min);
+
+downloadText = (fileName, content) => {
+  let link = document.createElement('a');
+  link.download = fileName;
+  
+  let blob = new Blob([content], {type: 'text/plain'});
+
+  link.href = URL.createObjectURL(blob);
+
+  link.click();
+
+  URL.revokeObjectURL(link.href);
+}
+
+class Wave {
+  constructor(
+    index = 1, 
+    zombie = 0, 
+    skeleton = 0, 
+    spider = 0, 
+    creeper = 0, 
+    wither_skeleton = 0, 
+    witch = 0, 
+    iron_golem = 0, 
+    ravager = 0
+  ) {
+    Object.assign(this, { 
+      index, 
+      zombie, 
+      skeleton, 
+      spider, 
+      creeper, 
+      wither_skeleton, 
+      witch, 
+      iron_golem, 
+      ravager
+    }) 
+  }
+  create_summon = i => {
+    let result = ``;
+
+    for (const [key, value] of Object.entries(this)) {
+      // console.log(`${key}: ${value}`);
+      if (key == 'index') continue;
+      let x = 104, y = 47, z;
+
+      for (let i = 0; i < value; i++) {
+        z = getRandInt(116, 140);
+        result += `summon minecraft:${key} ${x} ${y} ${z}\n`;
+      }
+    }
+
+    result += `say started round ${i}
+scoreboard players set @s round_time 100`;
+
+    return result;
+  }
+}
+
+let waves = [];
+
+waves.push(
+  new Wave(1, 5 ), 
+  new Wave(2, 8 ), 
+  new Wave(3, 5, 2 ), 
+  new Wave(4, 8, 4 ), 
+  new Wave(5, 15 ), 
+  new Wave(6, 8, 3, 2 ), 
+  new Wave(7, 0, 5, 4 ), 
+  new Wave(8, 10, 0, 4 ), 
+  new Wave(9, 0, 5, 5 ), 
+  new Wave(10, 0, 4, 2, 2 ), 
+  new Wave(11, 5, 2, 2, 1 ), 
+  new Wave(12, 8, 1, 2, 1 ), 
+  new Wave(13, 0, 2, 3, 2 ), 
+  new Wave(14, 0, 4, 5, 1 ), 
+  new Wave(15, 0, 12, 0, 0 ), 
+  new Wave(16, 7, 5, 2, 0 ), 
+  new Wave(17, 8, 2, 2, 1 ), 
+  new Wave(18, 0, 4, 4, 1 ), 
+  new Wave(19, 0, 0, 6, 2 ), 
+  new Wave(20, 0, 5, 0, 0, 5 ), 
+  new Wave(21, 2, 2, 2, 1 ), 
+  new Wave(22, 4, 4, 4, 1 ), 
+  new Wave(23, 8, 4, 2, 1, 1 ), 
+  new Wave(24, 7, 3, 4, 1, 1 ), 
+  new Wave(25, 0, 0, 13 ), 
+  new Wave(26, 0, 0, 3, 3, 1 ), 
+  new Wave(27, 10, 0, 0, 3, 1 ), 
+  new Wave(28, 2, 2, 5, 1, 2 ), 
+  new Wave(29, 9, 4, 2, 1, 2 ), 
+  new Wave(30, 3, 0, 0, 0, 3, 2 ), 
+  new Wave(31, 0, 4, 5, 1, 1 ), 
+  new Wave(32, 10, 4, 0, 2, 1 ), 
+  new Wave(33, 10, 0, 1, 2, 2 ), 
+  new Wave(34, 0, 3, 3, 1, 1, 1 ), 
+  new Wave(35, 0, 0, 0, 6 ), 
+  new Wave(36, 0, 2, 5, 2, 1 ), 
+  new Wave(37, 0, 4, 4, 2, 1 ), 
+  new Wave(38, 0, 2, 5, 1, 1, 1 ), 
+  new Wave(39, 0, 2, 2, 2, 2, 1 ), 
+  new Wave(40, 0, 0, 0, 0, 0, 2, 2), 
+  new Wave(41, 10, 0, 0, 5 ), 
+  new Wave(42, 5, 4, 5, 2, 1 ), 
+  new Wave(43, 10, 2, 8, 1, 1 ), 
+  new Wave(44, 5, 2, 5, 2, 0, 0, 1 ), 
+  new Wave(45, 0, 0, 0, 0, 10 ), 
+  new Wave(46, 7, 0, 0, 5, 2 ), 
+  new Wave(47, 10, 0, 0, 4, 3 ), 
+  new Wave(48, 10, 5, 10, 0, 1 ), 
+  new Wave(49, 0, 1, 1, 2, 1, 1, 2 ), 
+);
+
+let zip = new JSZip();
+let string = ``;
+
+for (let i = 2; i < waves.length; i++) {
+  // string += waves[i].create_summon();
+  zip.file(`round${i + 1}.mcfunction`, waves[i].create_summon(i + 1));
+}
+// console.log(string);
+
+zip.generateAsync( {type: "blob"} ).then(function callback(blob) {
+  saveAs(blob, `round.zip`);
+});
+
+</script>

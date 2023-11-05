@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.js" integrity="sha512-UNbeFrHORGTzMn3HTt00fvdojBYHLPxJbLChmtoyDwB6P9hX5mah3kMKm0HHNx/EvSPJt14b+SlD8xhuZ4w9Lg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.js" integrity="sha512-3FKAKNDHbfUwAgW45wNAvfgJDDdNoTi5PZWU7ak3Xm0X8u0LbDBWZEyPklRebTZ8r+p0M2KIJWDYZQjDPyYQEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <script>
+
+        randomIntFromInterval = (min, max) => // min and max included 
+            Math.floor(Math.random() * (max - min + 1) + min)
+
+        class Wave{
+            constructor(
+                index, 
+                zombie = 0, 
+                skeleton = 0, 
+                spider = 0, 
+                creeper = 0, 
+                wither_skeleton = 0, 
+                witch = 0, 
+                iron_golem = 0, 
+                ravager = 0
+            ) {
+                this.index = index;
+                this.zombie = zombie;
+                this.skeleton = skeleton;
+                this.spider = spider;
+                this.creeper = creeper;
+                this.wither_skeleton = wither_skeleton;
+                this.witch = witch;
+                this.iron_golem = iron_golem;
+                this.ravager = ravager;
+            }
+        }
+        
+        let waves = [];
+        waves.push(
+            new Wave(1, 5), 
+            new Wave(2, 8), 
+            new Wave(3, 5, 2), 
+            new Wave(4, 8, 4), 
+            new Wave(5, 15), 
+
+            new Wave(6, 8, 3, 2), 
+            new Wave(7, 0, 5, 4), 
+            new Wave(8, 10, 0, 4), 
+            new Wave(9, 0, 5, 5), 
+            new Wave(10, 0, 4, 2, 2),
+             
+            new Wave(11, 5, 2, 2, 1), 
+            new Wave(12, 8, 1, 2, 1), 
+            new Wave(13, 0, 2, 3, 2), 
+            new Wave(14, 0, 4, 5, 1), 
+            new Wave(15, 0, 12), 
+
+            new Wave(16, 7, 5, 2), 
+            new Wave(17, 8, 2, 2, 1), 
+            new Wave(18, 0, 4, 4, 1), 
+            new Wave(19, 0, 0, 6, 2), 
+            new Wave(20, 0, 5, 0, 0, 5), 
+
+            new Wave(21, 2, 2, 2, 2, 1), 
+            new Wave(22, 4, 4, 4, 1), 
+            new Wave(23, 8, 4, 2, 1, 1), 
+            new Wave(24, 7, 3, 4, 1, 1), 
+            new Wave(25, 0, 0, 13), 
+
+            new Wave(26, 0, 0, 3, 3, 1), 
+            new Wave(27, 10, 0, 0, 3, 1), 
+            new Wave(28, 2, 2, 5, 1, 2), 
+            new Wave(29, 9, 4, 2, 1, 2), 
+            new Wave(30, 3, 0, 0, 0, 3, 2), 
+
+            new Wave(31, 0, 4, 5, 1, 1), 
+            new Wave(32, 10, 4, 0, 2, 1), 
+            new Wave(33, 10, 0, 1, 2, 2), 
+            new Wave(34, 0, 2, 2, 1, 1, 1), 
+            new Wave(35, 0, 0, 0, 6), 
+
+            new Wave(36, 0, 2, 5, 2, 1), 
+            new Wave(37, 0, 4, 4, 2, 1), 
+            new Wave(38, 0, 2, 5, 1, 1, 1), 
+            new Wave(39, 0, 2, 2, 2, 1), 
+            new Wave(40, 0, 0, 0, 0, 0, 2, 2), 
+
+            new Wave(41, 10, 0, 0, 5), 
+            new Wave(42, 5, 4, 5, 2, 1), 
+            new Wave(43, 10, 2, 8, 1, 1), 
+            new Wave(44, 5, 2, 5, 2, 0, 0, 1), 
+            new Wave(45, 0, 0, 0, 0, 10), 
+
+            new Wave(46, 7, 0, 0, 5, 2), 
+            new Wave(47, 10, 0, 0, 4, 3), 
+            new Wave(48, 10, 5, 10, 1), 
+            new Wave(49, 0, 1, 1, 2, 1, 1, 2), 
+            new Wave(50, 0, 0, 0, 0, 4, 0, 0, 1), 
+
+            new Wave(51, 0, 2, 0, 0, 0, 3, 2), 
+            new Wave(52, 0, 0, 4, 0, 22, 0, 0, 1), 
+            new Wave(53, 0, 5, 0, 0, 5, 2), 
+            new Wave(54, 0, 2, 0, 0, 0, 2, 0, 1), 
+            new Wave(55, 0, 0, 0, 0, 0, 5), 
+
+            new Wave(56, 0, 0, 0, 6, 3), 
+            new Wave(57, 0, 4, 2, 2, 2, 2), 
+            new Wave(58, 0, 0, 0, 0, 5), 
+            new Wave(59, 0, 6, 6, 0, 0, 0, 3), 
+            new Wave(60, 0, 0, 0, 2, 2, 4), 
+
+            new Wave(61, 0, 0, 8, 0, 4, 2), 
+            new Wave(62, 0, 2, 0, 0, 0, 0, 2, 1), 
+            new Wave(63, 0, 5, 0, 0, 4, 2, 1), 
+            new Wave(64, 0, 0, 0, 0, 0, 1, 2, 1), 
+            new Wave(65, 0, 0, 0, 0, 0, 0, 6), 
+
+            new Wave(66, 0, 5, 0, 5, 0, 0, 2), 
+            new Wave(67, 0, 2, 0, 0, 0, 3, 0, 1), 
+            new Wave(68, 10, 0, 0, 0, 5, 2, 1), 
+            new Wave(69, 0, 9, 0, 0, 9), 
+            new Wave(70, 0, 0, 0, 0, 3, 0, 2, 1), 
+
+            new Wave(71, 0, 0, 7, 7), 
+            new Wave(72, 10, 8, 10, 0, 0, 1), 
+            new Wave(73, 0, 0, 0, 4, 0, 0, 4), 
+            new Wave(74, 0, 0, 0, 0, 6, 4), 
+            new Wave(75, 0, 0, 0, 0, 0, 0, 0, 2),
+
+            new Wave(76, 1, 1, 1, 1, 1, 1, 1, 1), 
+            new Wave(77, 0, 0, 0, 8, 0, 0, 2), 
+            new Wave(78, 0, 0, 6, 0, 4, 4), 
+            new Wave(79, 10, 10, 0, 0, 0, 1, 0, 1), 
+            new Wave(80, 0, 0, 4, 0, 0, 0, 0, 2), 
+
+            new Wave(81, 0, 9, 0, 9), 
+            new Wave(82, 0, 0, 0, 4, 7, 2), 
+            new Wave(83, 20, 0, 20), 
+            new Wave(84, 0, 0, 0, 0, 0, 1, 4, 1), 
+            new Wave(85, 70), 
+
+            new Wave(86, 0, 20, 0, 6), 
+            new Wave(87, 0, 0, 0, 0, 0, 2, 6, 0), 
+            new Wave(88, 0, 10, 6, 0, 2, 0, 0, 1), 
+            new Wave(89, 0, 0, 0, 5, 0, 0, 5), 
+            new Wave(90, 0, 0, 0, 0, 0, 2, 0, 2), 
+
+            new Wave(91, 0, 0, 2, 0, 0, 4, 4), 
+            new Wave(92, 0, 5, 0, 0, 5, 0, 5), 
+            new Wave(93, 20, 0, 0, 0, 0, 0, 0, 2), 
+            new Wave(94, 0, 0, 0, 7, 0, 0, 4), 
+            new Wave(95, 0, 35), 
+
+            new Wave(96, 0, 0, 12, 0, 12), 
+            new Wave(97, 0, 0, 0, 4, 0, 0, 6), 
+            new Wave(98, 100), 
+            new Wave(99, 2, 2, 2, 3, 3, 3, 1, 1), 
+            new Wave(100, 0, 0, 0, 0, 0, 4, 0, 3), 
+        );
+
+        let round_zip = new JSZip();
+        let start_round_zip = new JSZip();
+        let skip_round_zip = new JSZip();
+
+        for (let i = 49; i < waves.length; i++) {
+            let round_string = ``;
+            let round_index = i + 1;
+
+            for (const [key, value] of Object.entries( waves[i] ))
+                if ( key != "index" )
+                    for (let j = 0; j < value; j++)
+                        round_string += `summon minecraft:${key} 104 47 ${randomIntFromInterval(116, 140)}\n`;
+                
+            round_string += `say started round ${round_index}\nscoreboard players set @s round_time 100`
+
+            round_zip.file(`round${round_index}.mcfunction`, round_string);
+
+            // start_round_zip.file(`start_round${round_index}.mcfunction`, `scoreboard players set @s round${round_index} 200\ntag @s add round${round_index}\ntitle @s title round ${round_index}\ntitle @s subtitle wait...`);
+
+            // skip_round_zip.file(`skip_round${round_index}.mcfunction`, `scoreboard players set @s round${round_index} 0\nfunction round${round_index}\ntitle @s title GO!`);
+        }
+
+        round_zip.generateAsync( { type: "blob" } ).then( function(content) {
+            saveAs(content, "round.zip");
+        });
+
+        // start_round_zip.generateAsync( { type: "blob" } ).then( function(content) {
+        //     saveAs(content, "start_round.zip");
+        // });
+
+        // skip_round_zip.generateAsync( { type: "blob" } ).then( function(content) {
+        //     saveAs(content, "skip_round.zip");
+        // });
+    </script>   
+</body>
+</html>

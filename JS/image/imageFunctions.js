@@ -83,18 +83,22 @@ readImageToArray = (ev, imagePixel, ctx) => {
   let image = new Image();
   if(ev.target.files) {
     let file = ev.target.files[0];
-    var reader  = new FileReader();
+    var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = function (e) {
       image.src = e.target.result;
       image.onload = function(ev) {
+        let width = this.width;
+        let height = this.height;
+        console.log(width);
+        console.log(height);
         ctx.drawImage(image, 0, 0);
-        for (let i = 0; i < side; i++) {
+        for (let i = 0; i < width; i++) {
           imagePixel[i] = [];
         }
 
-        for (let i = 0; i < side; i++) {
-          for (let j = 0; j < side; j++) {
+        for (let i = 0; i < width; i++) {
+          for (let j = 0; j < height; j++) {
             if (checkIfPixelIsEmpty(ctx, i, j, 1, 1)) {
               imagePixel[i][j] = null;
             } else {
@@ -105,7 +109,8 @@ readImageToArray = (ev, imagePixel, ctx) => {
                                             imageData.data[3] / 255);
             }
           }        
-        } 
+        }
+        console.log(imagePixel); 
       }
     }
   }
@@ -180,22 +185,6 @@ drawImageFromArray = (ctx, imagePixel2, color, side) => {
   for (let i = 0; i < imagePixel2.length; i++) {
     for (let j = 0; j < imagePixel2[i].length; j++) {
       if (imagePixel2[i][j] != null) {
-        // if (isAddPixelSword[j][i] == 0) {
-        //   ctx.fillStyle = `rgba(${imagePixel2[j][i].r + color.r}, 
-        //                         ${imagePixel2[j][i].g + color.g}, 
-        //                         ${imagePixel2[j][i].b + color.b}, 
-        //                         ${imagePixel2[j][i].a})`;
-        // } else {
-        //   ctx.fillStyle = `rgba(${imagePixel2[j][i].r}, 
-        //                         ${imagePixel2[j][i].g}, 
-        //                         ${imagePixel2[j][i].b}, 
-        //                         ${imagePixel2[j][i].a})`;
-        // }
-        // ctx.fillStyle = `rgba(${imagePixel2[i][j].r + color.r + getRandInt(-maxD, maxD)}, 
-        //   ${imagePixel2[i][j].g + color.g + getRandInt(-maxD, maxD)}, 
-        //   ${imagePixel2[i][j].b + color.b + getRandInt(-maxD, maxD)}, 
-        //   ${imagePixel2[i][j].a})`;
-
         ctx.fillStyle = `rgba(
           ${averageColors(imagePixel2[i][j], color).r}, 
           ${averageColors(imagePixel2[i][j], color).g}, 
@@ -203,35 +192,29 @@ drawImageFromArray = (ctx, imagePixel2, color, side) => {
           ${imagePixel2[i][j].a}
         )`;
 
-        // ctx.fillStyle = `rgba(
-        //   ${addColors(imagePixel2[i][j], color).r}, 
-        //   ${addColors(imagePixel2[i][j], color).g}, 
-        //   ${addColors(imagePixel2[i][j], color).b}, 
-        //   ${imagePixel2[i][j].a}
-        // )`;
+        ctx.fillStyle = `rgba(
+          ${imagePixel2[i][j].r}, 
+          ${imagePixel2[i][j].g}, 
+          ${imagePixel2[i][j].b}, 
+          ${imagePixel2[i][j].a}
+        )`;
 
-        // ctx.fillStyle = pSBC( -0.5, `rgb(
-        //   ${imagePixel2[i][j].r},
-        //   ${imagePixel2[i][j].g},
-        //   ${imagePixel2[i][j].b}
-        // )`)
+        ctx.fillRect(side * i, side * j, side, side);
+      }
+    }
+  }
+}
 
-        // ctx.fillStyle = pSBC( 0.7, `rgb(
-        //   ${imagePixel2[i][j].r},
-        //   ${imagePixel2[i][j].g},
-        //   ${imagePixel2[i][j].b}
-        // )`, `rgb(
-        //   ${color.r},
-        //   ${color.g},
-        //   ${color.b}
-        // )`, true)
-
-        // ctx.fillStyle = `rgba(
-        //   ${imagePixel2[i][j].r}, 
-        //   ${imagePixel2[i][j].g}, 
-        //   ${imagePixel2[i][j].b},
-        //   ${imagePixel2[i][j].a}
-        // )`;
+drawImageFromArray2 = (ctx, imagePixel, side) => {
+  for (let i = 0; i < imagePixel.length; i++) {
+    for (let j = 0; j < imagePixel[i].length; j++) {
+      if (imagePixel[i][j] != null) {
+        ctx.fillStyle = `rgba(
+          ${imagePixel[i][j].r}, 
+          ${imagePixel[i][j].g}, 
+          ${imagePixel[i][j].b}, 
+          ${imagePixel[i][j].a}
+        )`;
 
         ctx.fillRect(side * i, side * j, side, side);
       }

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scale Down Image</title>
+
+    <script>
+        checkIfPixelIsEmpty = (ctx, x, y, w, h) => {
+            let idata = ctx.getImageData(x, y, w, h),      // needed as usual ...
+                u32 = new Uint32Array(idata.data.buffer),  // reads 1x uint32 instead of 4x uint8
+                i = 0, 
+                len = u32.length;
+
+            while (i < len) 
+                if (u32[i++]) return false;     // if !== 0 return false, not empty
+            return true                                    // all empty, all OK
+        }
+        previewFile = () => {
+            var preview = document.querySelector('img');
+            var file    = document.querySelector('input[type=file]').files[0];
+            var reader  = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
+        downloadCanvas = (canvas, filename) => {
+            var lnk = document.createElement('a'), e;
+            lnk.download = filename;
+            lnk.href = canvas.toDataURL("image/png;base64");
+
+            if (document.createEvent) {
+                e = document.createEvent("MouseEvents");
+                e.initMouseEvent("click", true, true, window,
+                                0, 0, 0, 0, 0, false, false, false,
+                                false, 0, null);
+                lnk.dispatchEvent(e);
+            } else if (lnk.fireEvent)
+                lnk.fireEvent("onclick");
+        }
+    </script>
+</head>
+<body>
+    <input type="file" onchange="previewFile()"><br>
+    <img src="" height="" alt="Image preview...">
+    <canvas id="cv"></canvas>
+    <canvas id="cv2"></canvas>
+    <script>
+        let cv = document.querySelector("#cv");
+        let ctx = cv.getContext("2d", { willReadFrequently: true });
+
+        let cv2 = document.querySelector("#cv2");
+        let ctx2 = cv2.getContext("2d", { willReadFrequently: true });
+
+        let img = document.querySelector("img");
+
+        img.onload = () => {
+            let gap = 60;
+            let d = gap / 2;
+            let scale = 1;
+            let pixel = [];
+
+            cv.width = img.width;
+            cv.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            for (let i = 0; i < cv.height / gap; i++) {
+                pixel[i] = []
+                for (let j = 0; j < cv.width / gap; j++) {
+                    // ctx.fillStyle = "red";
+                    // ctx.fillRect(j * gap + d, i * gap + d, 10, 10);
+
+                    let data = ctx.getImageData(j * gap + d, i * gap + d, 1, 1).data;
+                    console.log(data);
+
+                    let color = {r: data[0], g: data[1], b: data[2], a: data[3]}
+
+                    if ( checkIfPixelIsEmpty(ctx, j * gap + d, i * gap + d, 1, 1) ) 
+                        pixel[i][j] = null;
+                    else {
+                        pixel[i][j] = `#${color.r.toString(16).padStart(2, '0')}${color.g.toString(16).padStart(2, '0')}${color.b.toString(16).padStart(2, '0')}`;
+                        pixel[i][j] += color.a.toString(16).padStart(2, '0');
+                    }
+                }
+            }
+
+            console.table( pixel );
+
+            cv2.width = 16 * scale;
+            cv2.height = 16 * scale;
+
+            for (let i = 0; i < pixel.length; i++) {
+                for (let j = 0; j < pixel[0].length; j++) {
+                    if ( pixel[i][j] == null ) continue;
+                        
+                    ctx2.fillStyle = pixel[i][j];
+                    ctx2.fillRect(2 * scale + j * scale, 1 * scale + i * scale, scale, scale);
+                }
+            }
+
+            downloadCanvas(cv2, "_apple.png");
+        }
+    </script>
+</body>
+</html>

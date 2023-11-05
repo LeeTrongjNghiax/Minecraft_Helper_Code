@@ -105,30 +105,18 @@
   let cv = [];
   let ctx = [];
   let namespace = `cb`;
-  let side = 16;
   let multiple = 2;
 
   let imagePixel = [];
  
   let cv2 = document.getElementById('loadImage');
-  cv2.width = side;
-  cv2.height = side;
+  cv2.width = 16;
+  ctx.height = 16;
+  
   let ctx2 = cv2.getContext('2d');
 
   let cv3 = document.getElementById('drawOneImage');
-  cv3.width = side;
-  cv3.height = side;
   let ctx3 = cv3.getContext('2d');
-
-  let null2DArray = [];
-  for (let i = 0; i < side; i++) {
-    null2DArray[i] = [];
-  }
-  for (let i = 0; i < side; i++) {
-    for (let j = 0; j < side; j++) {
-      null2DArray[i][j] = 0;
-    }
-  }
 
   colors.push(
     new colorBlock("#000000", "Black", "Black"),
@@ -291,12 +279,12 @@
   document.querySelector('#fileinput').addEventListener('change', (ev) => {
     console.log(ev.target.files[0].name);
     console.log(/.jpg$/.test(ev.target.files[0].name));
-    readImageToArray(ev, imagePixel, ctx2)
+    readImageToArray(ev, imagePixel, ctx2);
     console.log(imagePixel);
   });
 
   document.querySelector('#drawImages').addEventListener('click', () => {
-    for (let i = 0; i < colors.length; i++) {
+    for (let i = 0; i < 1; i++) {
       let p = document.createElement("p");
       p.innerHTML = `${i}. ${colors[i].name} (${colors[i].hex})`;
       p.style.margin = 0;
@@ -304,12 +292,13 @@
       document.body.appendChild(p);
 
       cv[i] = document.createElement("canvas");
-      cv[i].width = side * multiple;
-      cv[i].height = side * multiple;
+      cv[i].width = ctx2.width * multiple;
+      cv[i].height = ctx2.height * multiple;
 
       ctx[i] = cv[i].getContext("2d");
       document.body.appendChild(cv[i]);
-      drawImageFromArray(ctx[i], imagePixel, colors[i].color, multiple);
+      // drawImageFromArray(ctx[i], imagePixel, colors[i].color, multiple);
+      drawImageFromArray2(ctx[i], imagePixel, multiple);
       
       cv[i].addEventListener("mousemove", () => {        
         var pixelData = cv[i].getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data; 
